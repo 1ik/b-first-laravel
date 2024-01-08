@@ -22,7 +22,13 @@ class UserController extends Controller
 
         $plainTextToken = $user->createToken('api-token')->plainTextToken;
 
-        return response(['success' => true, 'id' => $user->id, 'token' => $plainTextToken, 'email'=>$user->email, 'name'=>$user->name],  200);
+        return response([
+            'success' => true,
+            'id' => $user->id,
+            'token' => $plainTextToken,
+            'email'=>$user->email,
+            'name'=>$user->name,
+            'expire' => now()->addDay(1) ],  200);
     }
 
     public function logout(Request $request)
