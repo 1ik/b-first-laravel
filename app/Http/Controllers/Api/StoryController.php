@@ -3,47 +3,68 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoryStoreRequest;
+use App\Http\Resources\StoryResource;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Story;
+use App\Models\Tag;
+use App\Services\StoryService;
 use Illuminate\Http\Request;
 
 class StoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
-        //
+        $stories = Story::paginate(10); 
+
+        return response()->json([
+            'message' => 'Successfully retrieved Story',
+            'data'    => StoryResource::collection($stories),
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+ 
+    public function store(StoryStoreRequest $request, StoryService $storyService)
     {
-        //
+        $storyService->store($request->validated());
+
+        return response()->json(['message' => 'Story created successfully', 'data' => true], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+   
+    public function show(Story $story)
     {
-        //
+        return response()->json([
+            'message'   => 'Story retrieved successfully',
+            'story'     => new StoryResource($story),
+            'categories'=>Category::all(),
+            'authors'   =>Author::all(),
+            'tags'      =>Tag::all(),
+        ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(StoryStoreRequest $request, Story $story, StoryService $storyService)
     {
-        //
+        $storyService->update($story,$request->validated());
+        return response()->json([
+            'message' => 'Story updated successfully',
+            'data'    => true
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function destroy(Story $story)
     {
-        //
+        $story->update([
+            'deleted_at' => now()
+        ]);
+
+        return response()->json([
+            'message' => 'Story deleted successfully',
+            'data'    => null,
+        ], 200);
     }
 }

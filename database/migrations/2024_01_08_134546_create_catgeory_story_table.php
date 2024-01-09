@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('catgeory_story', function (Blueprint $table) {
+        Schema::create('category_story', function (Blueprint $table) {
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('story_id')->constrained('stories');
             $table->timestamps();
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('catgeory_story', function (Blueprint $table) {
+        Schema::table('category_story', function (Blueprint $table) {
             $table->dropForeign(['category_id']);
             $table->dropForeign(['story_id']);
             $table->dropIfExists();

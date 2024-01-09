@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('authors', AuthorController::class);
     Route::apiResource('tags', TagController::class);
+    Route::apiResource('stories', StoryController::class);
 });
 
 
