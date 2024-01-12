@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Story;
+use App\Models\StoryEditHistory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StoryService{
@@ -19,10 +21,15 @@ class StoryService{
 
     public function update(Story $story, array $data)
     {
+        
         DB::transaction(function() use($story, $data) {
 
             $story = tap($story)->update($data);
-
+            StoryEditHistory::create([
+                'user_id'  => Auth::user()->id,
+                'story_id' => $story->id,
+                'snapshot' => json_encode($data),
+            ]);
             $story->authors()->sync($data['authors']);
             $story->categories()->sync($data['categories']);
             $story->tags()->sync($data['tags']);
