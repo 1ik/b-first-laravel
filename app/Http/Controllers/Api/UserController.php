@@ -24,7 +24,6 @@ class UserController extends Controller
 
         return response([
             'success' => true,
-            'id' => $user->id,
             'token' => $plainTextToken,
             'email'=>$user->email,
             'name'=>$user->name,

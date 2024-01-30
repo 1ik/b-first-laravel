@@ -15,10 +15,18 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(10); 
-
+        
         return response()->json([
             'message' => 'Successfully retrieved categories',
             'data'    => CategoryResource::collection($categories),
+            'pagination' => [
+                'total' => $categories->total(),
+                'per_page' => $categories->perPage(),
+                'current_page' => $categories->currentPage(),
+                'last_page' => $categories->lastPage(),
+                'from' => $categories->firstItem(),
+                'to' => $categories->lastItem()
+            ], 
         ], 200);
     }
 
