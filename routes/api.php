@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
@@ -28,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('authors', AuthorController::class);
     Route::apiResource('tags', TagController::class);
     Route::apiResource('stories', StoryController::class);
+    route::post('/image-upload', [GalleryController::class, 'imageUpload']);
 });
 
 
