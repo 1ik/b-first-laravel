@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\api\ForgetPasswordController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'v1'], function () {
     Route::post('/login', [UserController::class, 'login']);
+    Route::post('/forgot-password', [ForgetPasswordController::class, 'forgotPassword']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/logout', [UserController::class, 'logout']);
         Route::apiResource('categories', CategoryController::class);
