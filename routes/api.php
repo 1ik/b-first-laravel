@@ -21,15 +21,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login', [UserController::class, 'login']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/logout', [UserController::class, 'logout']);
-    Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('authors', AuthorController::class);
-    Route::apiResource('tags', TagController::class);
-    Route::apiResource('stories', StoryController::class);
-    route::post('/image-upload', [GalleryController::class, 'imageUpload']);
+Route::group(['prefix'=>'v1'], function () {
+    Route::post('/login', [UserController::class, 'login']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/logout', [UserController::class, 'logout']);
+        Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('authors', AuthorController::class);
+        Route::apiResource('tags', TagController::class);
+        Route::apiResource('stories', StoryController::class);
+        route::post('/image-upload', [GalleryController::class, 'imageUpload']);
+    });
 });
 
 
