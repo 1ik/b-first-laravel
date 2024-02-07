@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-dd('44');
+
 Route::get('/reset-password/{token}', [ForgetPasswordController::class, 'resetPassword'])->name('password.reset');
 Route::post('/reset-password', [ForgetPasswordController::class, 'passwordStore'])->name('password.store');
