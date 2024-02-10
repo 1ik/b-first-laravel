@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\api\ForgetPasswordController;
+use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
