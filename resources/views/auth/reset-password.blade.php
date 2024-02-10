@@ -68,7 +68,7 @@
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
-                        <input id="exampleInputEmail1" type="email" name="email" class="form-control form-control-sm mt-2" value="{{old('email', $request->email)}}" required autofocus autocomplete="username" >
+                        <input id="exampleInputEmail1" type="email" name="email" class="form-control form-control-sm mt-2" value="{{old('email', $request->email)}}" required autofocus autocomplete="username" readonly>
                         @error('email')
                           <p class="text-danger p-2">{{ $message }}</p>
                         @enderror
