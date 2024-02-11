@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\MediaLibraryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,9 @@ Route::group(['prefix'=>'v1'], function () {
         Route::apiResource('authors', AuthorController::class);
         Route::apiResource('tags', TagController::class);
         Route::apiResource('stories', StoryController::class);
-        route::post('/image-upload', [GalleryController::class, 'imageUpload']);
+        //route::post('/image-upload', [GalleryController::class, 'imageUpload']);
+        Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
+        Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
     });
 });
 
