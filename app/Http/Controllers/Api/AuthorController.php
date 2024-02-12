@@ -12,12 +12,7 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        $authors = Author::paginate(10); 
-
-        return response()->json([
-            'message' => 'Successfully retrieved authors',
-            'data'    => AuthorResource::collection($authors),
-        ], 200);
+        return AuthorResource::collection(Author::paginate(10));
     }
 
     

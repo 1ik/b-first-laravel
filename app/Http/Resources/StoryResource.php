@@ -14,9 +14,9 @@ class StoryResource extends JsonResource
             'title'      => $this->title,
             'meta'       => json_decode($this->meta),
             'content'    => $this->content,
-            'authors'    => AuthorResource::collection($this->authors),
-            'categories' => CategoryResource::collection($this->categories),
-            'tags'       => TagResource::collection($this->tags)
+            'authors'    => AuthorResource::collection($this->whenLoaded('authors')),
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
+            'tags'       => TagResource::collection($this->whenLoaded('tags'))
         ];
     }
 }

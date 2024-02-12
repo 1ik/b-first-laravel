@@ -14,12 +14,7 @@ class TagController extends Controller
  
     public function index()
     {
-        $tags = Tag::paginate(10); 
-
-        return response()->json([
-            'message' => 'Successfully retrieved tags',
-            'data'    => TagResource::collection($tags),
-        ], 200);
+        return TagResource::collection(Tag::paginate(10)); 
     }
 
     

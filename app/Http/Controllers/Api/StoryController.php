@@ -18,12 +18,7 @@ class StoryController extends Controller
    
     public function index()
     {
-        $stories = Story::paginate(10); 
-
-        return response()->json([
-            'message' => 'Successfully retrieved Story',
-            'data'    => StoryResource::collection($stories),
-        ], 200);
+        return StoryResource::collection(Story::with(['authors','categories','tags'])->paginate(10)); 
     }
 
  

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('media_library_images', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->index('title');
             $table->string('url');
             $table->text('meta');
             $table->enum('status', [MediaStatus::HIDDEN, MediaStatus::SHOWN])->nullable();
@@ -30,6 +30,7 @@ return new class extends Migration
     {
         Schema::table('media_library_images', function (Blueprint $table) {
             $table->dropForeign(['created_by']);
+            $table->dropIfExists();
         });
     }
 };
