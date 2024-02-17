@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\MediaLibraryController;
+use App\Http\Controllers\Api\MediaLibraryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
