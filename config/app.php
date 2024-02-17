@@ -5,6 +5,7 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    "delete_previous_access_tokens_on_login" =>env('DELETE_PREVIOUS_ACCESS_TOKENS_ON_LOGIN',false),
     /*
     |--------------------------------------------------------------------------
     | Application Name

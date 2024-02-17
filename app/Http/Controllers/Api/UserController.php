@@ -18,7 +18,9 @@ class UserController extends Controller
             return response(['error' => 1, 'message' => 'invalid credentials'], 401);
         }
 
-        $user->tokens()->delete();
+        if (config('delete_previous_access_tokens_on_login', false)) {
+            $user->tokens()->delete();
+        }
 
         $plainTextToken = $user->createToken('api-token')->plainTextToken;
 
