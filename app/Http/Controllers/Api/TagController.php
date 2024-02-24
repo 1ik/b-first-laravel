@@ -12,9 +12,14 @@ use Illuminate\Http\Request;
 class TagController extends Controller
 {
  
-    public function index()
+    public function index(Request $request)
     {
-        return TagResource::collection(Tag::paginate(10)); 
+        $tags = Tag::query();
+        if(!empty($request->name)){
+            $tags->where('name','like','%'.$request->name.'%');
+        }
+
+        return TagResource::collection($tags->paginate(10)); 
     }
 
     
