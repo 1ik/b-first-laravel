@@ -16,7 +16,7 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
-
+    'b_first_old' => env('DB_CONNECTION_B_FIRST_OLD','mysql'),
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -61,6 +61,29 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+        ],
+
+        'mysql_b_first_old' => [
+            'driver'            => 'mysql',
+            'read'              => [
+                'host'          => explode(",", env('DB_REPLICAS_HOST_B_FIRST_OLD', env('DB_HOST_B_FIRST_OLD', '127.0.0.1'))),
+            ],
+            'write'             => [
+                'host'          => [env('DB_MASTER_HOST_B_FIRST_OLD', env('DB_HOST_B_FIRST_OLD', '127.0.0.1'))],
+            ],
+            'sticky'            => true,
+            'port'              => env('DB_PORT_B_FIRST_OLD', '3306'),
+            'database'          => env('DB_DATABASE_B_FIRST_OLD', ''),
+            'username'          => env('DB_USERNAME_B_FIRST_OLD', ''),
+            'password'          => env('DB_PASSWORD_B_FIRST_OLD', ''),
+            'unix_socket'       => env('DB_SOCKET_B_FIRST_OLD', ''),
+            'charset'           => 'utf8mb4',
+            'collation'         => 'utf8mb4_unicode_ci',
+            'prefix'            => '',
+            'prefix_indexes'    => true,
+            'strict'            => false,
+            'engine'            => null,
+            'options'           => extension_loaded('pdo_mysql') ? array_filter([PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),]) : [],
         ],
 
         'pgsql' => [

@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('media_library_images', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->index('title');
+            $table->string('title')->index('title')->nullable();
             $table->string('url');
-            $table->text('meta');
+            $table->text('meta')->nullable();
             $table->enum('status', [MediaStatus::HIDDEN, MediaStatus::SHOWN])->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
