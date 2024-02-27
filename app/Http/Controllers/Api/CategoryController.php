@@ -22,7 +22,7 @@ class CategoryController extends Controller
     {
         $category = Category::create([
             'name' => $request->name,
-            'meta' => json_encode($request->meta),
+            'meta' => $request->meta,
         ]);
         return response()->json(['message' => 'Category created successfully', 'data' => $category], 201);
     }
@@ -41,7 +41,7 @@ class CategoryController extends Controller
     {
         $data = $category->update([
             'name' => $request->name,
-            'meta' => json_encode($request->meta),
+            'meta' => $request->meta,
         ]);
 
         return response()->json([

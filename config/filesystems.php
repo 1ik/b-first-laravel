@@ -46,14 +46,21 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'key' => env('AWS_KEY', 'NOT_AVAILBLE'),
+            'secret' => env('AWS_SECRET', 'NOT_AVAILBLE'),
+            'region' => env('AWS_REGION', 'NOT_AVAILBLE'),
+            'bucket' => env('AWS_BUCKET', 'NOT_AVAILBLE'),
+            'url' => env('AWS_URL', 'https://s3.ap-south-1.amazonaws.com/bangladeshfirstphotos'),
+            'acl' => 'public-read'
+        ],
+
+        'do_spaces' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY', 'NOT_AVAILBLE'),
+            'secret' => env('DO_SPACES_SECRET', 'NOT_AVAILBLE'),
+            'region' => env('DO_SPACES_REGION', 'NOT_AVAILBLE'),
+            'bucket' => env('DO_SPACES_BUCKET', 'NOT_AVAILBLE'),
+            'endpoint' => env('DO_SPACES_ENDPOINT', 'https://sgp1.digitaloceanspaces.com')
         ],
 
     ],

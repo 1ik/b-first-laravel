@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
+
 class ImageUploadService{
 
     protected $storageDisk;
@@ -14,14 +16,12 @@ class ImageUploadService{
 
     public function upload($imageFile)
     {
+        $dateDir = date('Y-M-d');
+        $filename = $dateDir.'_'.uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
+        $fileLocation = 'mediaImages' . '/' . $filename;
+        Storage::disk('do_spaces')->put($fileLocation, file_get_contents($imageFile), 'public');
 
-        $filename = uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
-
-        $filePath = 'mediaImages';
-
-        $imageFile->storeAs($filePath, $filename, $this->storageDisk);
-
-        return $filePath . '/' . $filename;
+        return $fileLocation;
     }
 
 }
