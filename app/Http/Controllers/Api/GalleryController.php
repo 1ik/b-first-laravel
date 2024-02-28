@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\Author;
 use App\Models\BFirstOld\OldCategory;
 use App\Models\BFirstOld\OldStory;
 use App\Models\Category;
@@ -23,34 +24,26 @@ class GalleryController extends Controller
         $old_category = OldCategory::all();
         $posts        = OldStory::all();
 
-        // DB::transaction(function() use($posts,$imageUploadService) {
-               
-        // },5);
-
-        foreach($posts as $post){
-
-            if($post->featuredPhotoUrl != null)
-            {
-                $url = 'https://bfirst.sgp1.cdn.digitaloceanspaces.com/'.$post->featuredPhotoUrl;
-                $fileContent = file_get_contents($url);
-                if ($fileContent !== false) {
-                    $fileName = uniqid() . '.' . pathinfo($url, PATHINFO_EXTENSION);
-                    $fileLocation = 'mediaImages' . '/' . $fileName;
-                    Storage::disk('do_spaces')->put($fileLocation, $fileContent, 'public');
+        DB::transaction(function() use($posts,$imageUploadService) {
+            foreach($posts as $post){
+                $story = new Story();
+                $story->title =  $post->title;
+                $story->content = $post->content;
+                $story->meta = ['headline'=>$post->brief,'featured_image'=>$post->featuredPhotoUrl,'featured_image_caption'=>$post->feature_image_caption];
+                $story->created_at = $post->created_at;
+                $story->updated_at = $post->updated_at;
+                $story->save();
+                $story->categories()->attach($post->category_id);
+                if (!empty($post->author)) {
+                    $author = Author::firstOrCreate(['name' => $post->author]);
+                    if ($author->wasRecentlyCreated) {
+                        $story->authors()->attach($author->id);
+                    } else {
+                        $story->authors()->attach($author->id);
+                    }
                 }
-                MediaLibraryImage::create([
-                    'url'         => $post->featuredPhotoUrl?$fileLocation:null,
-                    'created_by'  => Auth::user()->id
-                ]);
-       
-            }
-            $story = new Story();
-            $story->title =  $post->title;
-            $story->content = $post->content;
-            $story->meta = $post->featuredPhotoUrl ? ['featured_image' =>  $fileLocation] : null;
-            $story->save();
-            $story->categories()->attach($post->category_id);
-            
-        }
+            }   
+        },5);
+
     }
 }

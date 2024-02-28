@@ -16,9 +16,25 @@ use Illuminate\Http\Request;
 class StoryController extends Controller
 {
    
-    public function index()
+    public function index(Request $request)
     {
-        return StoryResource::collection(Story::with(['authors','categories','tags'])->paginate(10)); 
+
+        $query = Story::query();
+
+        if ($request->has('category_id')) {
+            $category_id = $request->input('category_id');
+            $query->whereHas('categories', function ($query) use ($category_id) {
+                $query->where('category_id', $category_id);
+            });
+        }
+
+        if ($request->has('latest')) {
+            $query->latest();
+        }
+
+        $stories = $query->with(['authors', 'categories', 'tags'])->paginate(10);
+
+        return StoryResource::collection($stories);
     }
 
  
