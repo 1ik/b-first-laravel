@@ -32,7 +32,7 @@ class StoryController extends Controller
             $query->latest();
         }
 
-        $stories = $query->with(['authors', 'categories', 'tags'])->paginate(10);
+        $stories = $query->with(['authors', 'categories', 'tags'])->paginate(20);
 
         return StoryResource::collection($stories);
     }

@@ -17,7 +17,7 @@ class FrontendController extends Controller
     }
     public function latestStories(){
 
-        return StoryResource::collection(Story::with(['authors', 'categories', 'tags'])->latest()->get());
+        return StoryResource::collection(Story::with(['authors', 'categories', 'tags'])->latest()->paginate(20));
     }
 
     public function categoryStories($category){
@@ -28,7 +28,7 @@ class FrontendController extends Controller
             return response()->json(['error' => 'Category not found'], 404);
         }
 
-        $stories = $category->stories()->with('authors', 'tags','categories')->paginate(10); 
+        $stories = $category->stories()->with('authors', 'tags','categories')->paginate(20); 
 
         return StoryResource::collection($stories);
     }
