@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
+use App\Http\Controllers\Api\Frontend\FrontendController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
@@ -24,6 +25,15 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix'=>'v1'], function () {
+
+    Route::group(['prefix' => 'public'], function () {
+        Route::get('/categories', [FrontendController::class, 'allCategories']);
+        Route::get('/latest/stories', [FrontendController::class, 'latestStories']);
+        Route::get('/categories/{category}/stories', [FrontendController::class, 'categoryStories']);
+        Route::get('/story/details/{story}', [FrontendController::class, 'storyDetails']);
+    });
+
+
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/forgot-password', [ForgetPasswordController::class, 'forgotPassword']);
     Route::middleware('auth:sanctum')->group(function () {

@@ -50,10 +50,7 @@ class StoryController extends Controller
     {
         return response()->json([
             'message'   => 'Story retrieved successfully',
-            'story'     => new StoryResource($story),
-            'categories'=>Category::all(),
-            'authors'   =>Author::all(),
-            'tags'      =>Tag::all(),
+            'story'     => new StoryResource($story->load('authors', 'tags', 'categories')),
         ], 200);
     }
 
