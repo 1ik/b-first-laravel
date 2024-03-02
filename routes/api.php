@@ -31,6 +31,8 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/latest/stories', [FrontendController::class, 'latestStories']);
         Route::get('/categories/{category}/stories', [FrontendController::class, 'categoryStories']);
         Route::get('/story/details/{story}', [FrontendController::class, 'storyDetails']);
+        Route::get('/categories/{category}/featured-stories', [FrontendController::class, 'categoryFeaturedStories']);
+        Route::get('/stories/search', [FrontendController::class, 'searchStories']);
     });
 
 
