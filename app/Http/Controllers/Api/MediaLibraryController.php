@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MediaLibraryRequest;
 use App\Models\MediaLibraryImage;
 use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MediaLibraryController extends Controller
 {
-    public function uploadImage(Request $request,ImageUploadService $imageUploadService){
+    public function uploadImage(MediaLibraryRequest $request,ImageUploadService $imageUploadService){
         $imagePath = $imageUploadService->upload($request->file('image'));
         MediaLibraryImage::create([
             'title'       => $request->title,
