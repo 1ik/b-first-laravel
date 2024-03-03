@@ -15,8 +15,7 @@ class FeaturedStoryController extends Controller
         $featured_stories = FeaturedStories::where('category_id',$category)->first();
         $stories = []; 
         if ($featured_stories) {
-            $story_ids = json_decode($featured_stories->story_ids);
-            $stories = Story::select('id','title')->whereIn('id', $story_ids)->get();
+            $stories = Story::select('id','title')->whereIn('id', $featured_stories->story_ids)->get();
         }
         return response()->json(['message' => 'Successfully retrieved Featured Stories', 'data' => $stories], 201);
     }
