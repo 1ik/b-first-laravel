@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\Frontend\FrontendController;
 use App\Http\Controllers\Api\GalleryController;
@@ -31,10 +32,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/latest/stories', [FrontendController::class, 'latestStories']);
         Route::get('/categories/{category}/stories', [FrontendController::class, 'categoryStories']);
         Route::get('/story/details/{story}', [FrontendController::class, 'storyDetails']);
-        Route::get('/categories/{category}/featured-stories', [FrontendController::class, 'categoryFeaturedStories']);
-        Route::get('/stories/search', [FrontendController::class, 'searchStories']);
     });
-
 
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/forgot-password', [ForgetPasswordController::class, 'forgotPassword']);
@@ -47,6 +45,11 @@ Route::group(['prefix'=>'v1'], function () {
         //route::post('/image-upload', [GalleryController::class, 'imageUpload']);
         Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
+
+        //Featured Stories------
+        Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
+        Route::get('/stories-search', [FeaturedStoryController::class, 'searchStories']);
+        Route::post('/featured/stories/create', [FeaturedStoryController::class, 'createFeaturedStory']);
     });
 });
 

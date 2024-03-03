@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class FeaturedStories extends Model
 {
     use HasFactory;
+    protected $fillable = ['category_id','story_ids'];
 }
