@@ -9,4 +9,8 @@ class FeaturedStories extends Model
 {
     use HasFactory;
     protected $fillable = ['category_id','story_ids'];
+
+    protected $casts = [
+        'story_ids' => 'array'
+    ];
 }
