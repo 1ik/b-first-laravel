@@ -32,6 +32,9 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/latest/stories', [FrontendController::class, 'latestStories']);
         Route::get('/categories/{category}/stories', [FrontendController::class, 'categoryStories']);
         Route::get('/story/details/{story}', [FrontendController::class, 'storyDetails']);
+
+        //Featured-stories--------
+        Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
     });
 
     Route::post('/login', [UserController::class, 'login']);
@@ -47,7 +50,6 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
 
         //Featured Stories------
-        Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
         Route::get('/stories-search', [FeaturedStoryController::class, 'searchStories']);
         Route::post('/featured/stories/create', [FeaturedStoryController::class, 'createFeaturedStory']);
     });
