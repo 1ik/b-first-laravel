@@ -16,9 +16,10 @@ class FeaturedStoryController extends Controller
         $stories = []; 
         if ($featured_stories) {
             $storyIdsString = implode(',', $featured_stories->story_ids);
-            $stories = Story::select('id','title')->whereIn('id', $featured_stories->story_ids)->orderByRaw("FIELD(id,$storyIdsString)")->get();
+            $stories = Story::with(['authors', 'categories', 'tags'])->whereIn('id', $featured_stories->story_ids)->orderByRaw("FIELD(id,$storyIdsString)")->get();
         }
-        return response()->json(['message' => 'Successfully retrieved Featured Stories', 'data' => $stories], 201);
+
+        return StoryResource::collection($stories);
     }
 
     public function searchStories(Request $request){
