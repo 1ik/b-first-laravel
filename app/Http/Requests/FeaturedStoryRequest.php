@@ -20,7 +20,11 @@ class FeaturedStoryRequest extends FormRequest
 
         return [
             'category_id' => 'required',
-            'story_ids'   => 'required|array'
+            'story_ids'   => ['required', 'array', function ($attribute, $value, $fail) {
+                if (in_array(null, $value)) {
+                    return $fail("The $attribute field contains null value.");
+                }
+            }],
         ];
     }
 
