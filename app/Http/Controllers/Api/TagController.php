@@ -19,7 +19,7 @@ class TagController extends Controller
             $tags->where('name','like','%'.$request->name.'%');
         }
 
-        return TagResource::collection($tags->paginate(10)); 
+        return TagResource::collection($tags->orderBy('id', 'desc')->paginate(10)); 
     }
 
     

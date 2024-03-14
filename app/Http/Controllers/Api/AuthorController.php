@@ -12,7 +12,7 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        return AuthorResource::collection(Author::paginate(10));
+        return AuthorResource::collection(Author::orderBy('id', 'desc')->paginate(10));
     }
 
     
