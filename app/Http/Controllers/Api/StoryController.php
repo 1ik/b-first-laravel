@@ -7,6 +7,7 @@ use App\Http\Requests\StoryStoreRequest;
 use App\Http\Resources\StoryResource;
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\FeaturedStories;
 use App\Models\Story;
 use App\Models\Tag;
 use App\Services\StoryService;
@@ -67,6 +68,20 @@ class StoryController extends Controller
 
     public function destroy(Story $story)
     {
+
+        $featured_stories = FeaturedStories::all();
+        if($featured_stories){
+            foreach($featured_stories as $key=>$featured_story){
+                $story_ids = $featured_story->story_ids;
+                $key = array_search($story->id, $story_ids);
+                if ($key !== false) {;
+                    unset($story_ids[$key]);
+                    $featured_story->story_ids = array_values($story_ids);
+                    $featured_story->save();
+                }
+            }
+        }
+        
         $story->update([
             'deleted_at' => now()
         ]);
