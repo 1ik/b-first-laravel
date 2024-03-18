@@ -12,9 +12,14 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
  
-    public function index()
+    public function index(Request $request)
     {
-        return CategoryResource::collection(Category::orderBy('id', 'desc')->paginate(10));
+        $category = Category::query();
+        if(!empty($request->name)){
+            $category->where('name','like','%'.$request->name.'%');
+        }
+
+        return CategoryResource::collection($category->orderBy('id', 'desc')->paginate(10));
     }
 
     

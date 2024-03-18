@@ -10,9 +10,13 @@ use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return AuthorResource::collection(Author::orderBy('id', 'desc')->paginate(10));
+        $author = Author::query();
+        if(!empty($request->name)){
+            $author->where('name','like','%'.$request->name.'%');
+        }
+        return AuthorResource::collection($author->orderBy('id', 'desc')->paginate(10));
     }
 
     
