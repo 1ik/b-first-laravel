@@ -22,18 +22,11 @@ class StoryController extends Controller
 
         $query = Story::query();
 
-        if ($request->has('category_id')) {
-            $category_id = $request->input('category_id');
-            $query->whereHas('categories', function ($query) use ($category_id) {
-                $query->where('category_id', $category_id);
-            });
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->input('title') . '%');
         }
 
-        if ($request->has('latest')) {
-            $query->latest();
-        }
-
-        $stories = $query->with(['authors', 'categories', 'tags'])->orderby('id','desc')->paginate(20);
+        $stories = $query->with(['authors', 'categories', 'tags'])->orderBy('id', 'desc')->paginate(20);
 
         return StoryResource::collection($stories);
     }
