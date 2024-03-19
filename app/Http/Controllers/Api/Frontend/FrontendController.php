@@ -29,7 +29,7 @@ class FrontendController extends Controller
             return response()->json(['error' => 'Category not found'], 404);
         }
 
-        $stories = $category->stories()->with('authors', 'tags','categories')->paginate($pageSize); 
+        $stories = $category->stories()->with('authors', 'tags','categories')->orderBy('id', 'desc')->paginate($pageSize); 
 
         return StoryResource::collection($stories);
     }
