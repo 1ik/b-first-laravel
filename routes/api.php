@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\Frontend\FrontendController;
-use App\Http\Controllers\Api\frontend\SiteMapController;
+use App\Http\Controllers\Api\Frontend\SiteMapController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
