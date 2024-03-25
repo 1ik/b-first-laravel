@@ -14,7 +14,7 @@ class SiteMapController extends Controller
         $oneMonthAgo = $today->copy()->subMonth()->startOfDay();
         $endOfDay = $today->endOfDay();
         
-        $stories = Story::with(['tags'])->where('created_at', '>=', $oneMonthAgo)
+        $stories = Story::with(['tags'])->select('id','title','meta','created_at','updated_at')->where('created_at', '>=', $oneMonthAgo)
                          ->where('created_at', '<=', $endOfDay)
                          ->get();
         return $stories;
