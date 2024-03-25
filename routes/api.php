@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\Frontend\FrontendController;
+use App\Http\Controllers\Api\frontend\SiteMapController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
@@ -35,6 +36,11 @@ Route::group(['prefix'=>'v1'], function () {
 
         //Featured-stories--------
         Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
+
+        //All stories for sitemap
+        Route::group(['prefix' => 'sitemap'], function () {
+          Route::get('/stories', [SiteMapController::class, 'sitemapStotries']);
+        });
     });
 
     Route::post('/login', [UserController::class, 'login']);
