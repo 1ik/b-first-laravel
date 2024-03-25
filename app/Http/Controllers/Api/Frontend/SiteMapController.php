@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\frontend;
+namespace App\Http\Controllers\Api\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Story;
