@@ -50,7 +50,7 @@ class BackupDatabase extends Command
 
         $spaceDisk = Storage::disk('do_spaces')->put($fileLocation,file_get_contents($backupPath), 'public');
 
-        unlink($backupPath);
+        //unlink($backupPath);
 
         Log::info("Database backup created and uploaded: $backupFileName");
     }
