@@ -51,13 +51,14 @@ Route::group(['prefix'=>'v1'], function () {
         Route::apiResource('authors', AuthorController::class);
         Route::apiResource('tags', TagController::class);
         Route::apiResource('stories', StoryController::class);
-        //route::post('/image-upload', [GalleryController::class, 'imageUpload']);
+        //route::get('/image-upload', [GalleryController::class, 'imageUpload']);
         Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
 
         //Featured Stories------
         Route::get('/stories-search', [FeaturedStoryController::class, 'searchStories']);
         Route::post('/featured/stories/create', [FeaturedStoryController::class, 'createFeaturedStory']);
+
     });
 });
 

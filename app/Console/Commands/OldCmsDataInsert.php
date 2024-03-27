@@ -24,7 +24,7 @@ class OldCmsDataInsert extends Command
      *
      * @var string
      */
-    protected $description = 'We have old cms, we insert old data by this command';
+    protected $description = 'We have old cms, we insert old data to in new database by this command';
 
     /**
      * Execute the console command.
