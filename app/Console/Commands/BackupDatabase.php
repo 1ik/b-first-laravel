@@ -28,7 +28,7 @@ class BackupDatabase extends Command
      */
     public function handle()
     {
-        $backupFileName = 'backup_' . date('Y-m-d_His') . '.sql';
+        $backupFileName = 'backup_database.sql';
         $folder_dir = 'backup_sql';
         $fileLocation = $folder_dir.'/'.$backupFileName;
 
