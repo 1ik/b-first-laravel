@@ -51,6 +51,9 @@ Route::group(['prefix'=>'v1'], function () {
         Route::apiResource('authors', AuthorController::class);
         Route::apiResource('tags', TagController::class);
         Route::apiResource('stories', StoryController::class);
+        Route::get('/soft-deleted-stories', [StoryController::class,'softDeletedStories']);
+        Route::put('/restore-story/{id}', [StoryController::class,'restoreStory']);
+        Route::delete('/delete-story/{id}', [StoryController::class,'deleteStory']);
         //route::get('/image-upload', [GalleryController::class, 'imageUpload']);
         Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
