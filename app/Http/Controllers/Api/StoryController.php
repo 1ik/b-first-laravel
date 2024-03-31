@@ -109,8 +109,8 @@ class StoryController extends Controller
 
     public function deleteStory($story_id)
     {
-        $story = Story::with(with(['authors', 'categories', 'tags']))->onlyTrashed()->find($story_id);
-       
+        $story = Story::with(['authors', 'categories', 'tags'])->onlyTrashed()->find($story_id);
+  
         if ($story) {
             DB::transaction(function() use($story) {
                 $story->authors()->detach();
