@@ -86,11 +86,8 @@ class StoryController extends Controller
     }
 
     public function softDeletedStories(){
-        $softDeletedStories = Story::onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-        return response()->json([
-            'message' => 'Soft Deleted Data',
-            'data'    => $softDeletedStories
-        ], 200);
+        $softDeletedStories = Story::with(['authors'])->onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
+        return StoryResource::collection($softDeletedStories);
     }
 
     public function restoreStory($story_id)
