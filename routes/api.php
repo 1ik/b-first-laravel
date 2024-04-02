@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthorController;
+use App\Http\Controllers\Api\Backend\TrashController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
@@ -51,9 +52,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::apiResource('authors', AuthorController::class);
         Route::apiResource('tags', TagController::class);
         Route::apiResource('stories', StoryController::class);
-        Route::get('/soft-deleted-stories', [StoryController::class,'softDeletedStories']);
-        Route::put('/restore-story/{id}', [StoryController::class,'restoreStory']);
-        Route::delete('/delete-story/{id}', [StoryController::class,'deleteStory']);
+
         //route::get('/image-upload', [GalleryController::class, 'imageUpload']);
         Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
@@ -61,6 +60,11 @@ Route::group(['prefix'=>'v1'], function () {
         //Featured Stories------
         Route::get('/stories-search', [FeaturedStoryController::class, 'searchStories']);
         Route::post('/featured/stories/create', [FeaturedStoryController::class, 'createFeaturedStory']);
+
+        //Trash----------------
+        Route::get('/trash-items/{type}', [TrashController::class,'trashItems']);
+        Route::put('/restore-trash-item/{type}/{id}', [TrashController::class,'restoreTrashItem']);
+        Route::delete('/delete-trash-item/{type}/{id}', [TrashController::class,'deleteTrashItem']);
 
     });
 });

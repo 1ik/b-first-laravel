@@ -85,39 +85,4 @@ class StoryController extends Controller
         ], 200);
     }
 
-    public function softDeletedStories(){
-        $softDeletedStories = Story::with(['authors'])->onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-        return StoryResource::collection($softDeletedStories);
-    }
-
-    public function restoreStory($story_id)
-    {
-        $story = Story::onlyTrashed()->find($story_id);
-
-        if ($story) {
-            if ($story->trashed()) {
-                $story->restore();
-                return response()->json(['message' => 'Story restored successfully']);
-            } 
-        }else{
-            return response()->json(['error' => 'Story is not soft-deleted'], 404);
-        }
-    }
-
-    public function deleteStory($story_id)
-    {
-        $story = Story::with(['authors', 'categories', 'tags'])->onlyTrashed()->find($story_id);
-  
-        if ($story) {
-            DB::transaction(function() use($story) {
-                $story->authors()->detach();
-                $story->categories()->detach();
-                $story->tags()->detach();
-                $story->forceDelete();
-            },5);
-            return response()->json(['message' => 'Story permanently deleted']);
-        } else {
-            return response()->json(['error' => 'Story not found'], 404);
-        }
-    }
 }
