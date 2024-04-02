@@ -92,7 +92,6 @@ class TrashController extends Controller
         if($type == 'author'){
             $author = Author::with(['stories'])->onlyTrashed()->find($id);
             if ($author) {
-                return $author;
                 $author->stories()->detach();
                 $author->forceDelete();
                 return response()->json(['message' => 'author permanently deleted']);
