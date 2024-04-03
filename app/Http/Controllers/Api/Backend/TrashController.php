@@ -20,24 +20,24 @@ class TrashController extends Controller
         if($type == 'story')
         {
             $softDeletedStories = Story::with(['authors'])->onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-            $storyData = StoryResource::collection($softDeletedStories);
+            $trash_items = StoryResource::collection($softDeletedStories);
         }
         if($type == 'category')
         {
             $softDeletedStories = Category::onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-            $storyData = CategoryResource::collection($softDeletedStories);
+            $trash_items = CategoryResource::collection($softDeletedStories);
         }
         if($type == 'author')
         {
             $softDeletedStories = Author::onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-            $storyData = AuthorResource::collection($softDeletedStories);
+            $trash_items = AuthorResource::collection($softDeletedStories);
         }
         if($type == 'tag')
         {
             $softDeletedStories = Tag::onlyTrashed()->orderByDesc('deleted_at')->paginate(20);
-            $storyData = TagResource::collection($softDeletedStories);
+            $trash_items = TagResource::collection($softDeletedStories);
         }
-        return $storyData;
+        return $trash_items;
     }
 
     public function restoreTrashItem($type,$id)
@@ -84,8 +84,10 @@ class TrashController extends Controller
         if($type == 'category'){
             $category = Category::with(['stories'])->onlyTrashed()->find($id);
             if ($category) {
-                $category->stories()->detach();
-                $category->forceDelete();
+                DB::transaction(function() use($category) {
+                    $category->stories()->detach();
+                    $category->forceDelete();
+                },5);
                 return response()->json(['message' => 'category permanently deleted']);
             }
         }

@@ -53,7 +53,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::apiResource('tags', TagController::class);
         Route::apiResource('stories', StoryController::class);
 
-        //route::get('/image-upload', [GalleryController::class, 'imageUpload']);
+        route::get('/image-upload', [GalleryController::class, 'imageUpload']);
         Route::post('/media-upload-image', [MediaLibraryController::class, 'uploadImage']);
         Route::get('/media-image-list', [MediaLibraryController::class, 'mediaImageList']);
 

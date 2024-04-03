@@ -11,7 +11,7 @@ class Author extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name'];
+    protected $fillable = ['name','deleted_at'];
 
     public function stories(): BelongsToMany
     {

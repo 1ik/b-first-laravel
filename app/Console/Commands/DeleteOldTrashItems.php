@@ -2,9 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Author;
+use App\Models\Category;
 use App\Models\Story;
+use App\Models\Tag;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DeleteOldTrashItems extends Command
 {
@@ -28,11 +33,41 @@ class DeleteOldTrashItems extends Command
     public function handle()
     {
         $thresholdDate = Carbon::now()->subDays(30);
-        $deletedCount  = Story::where('deleted_at', '<=', $thresholdDate)->forceDelete();
-        if ($deletedCount > 0) {
-            $this->info("$deletedCount old items from the trash have been deleted successfully.");
-        } else {
-            $this->info('No old items found in the trash to delete.');
+        $storyId    = Story::onlyTrashed()->where('deleted_at', '<=', $thresholdDate)->pluck('id');
+        $categoryId = Category::onlyTrashed()->where('deleted_at', '<=', $thresholdDate)->pluck('id');
+        $authorId   = Author::onlyTrashed()->where('deleted_at', '<=', $thresholdDate)->pluck('id');
+        $tagId      = Tag::onlyTrashed()->where('deleted_at', '<=', $thresholdDate)->pluck('id');
+
+        if ($storyId->isNotEmpty()) {
+            DB::transaction(function () use ($storyId) {
+                DB::table('author_story')->whereIn('story_id', $storyId)->delete();
+                DB::table('category_story')->whereIn('story_id', $storyId)->delete();
+                DB::table('tag_story')->whereIn('story_id', $storyId)->delete();
+        
+                Story::whereIn('id', $storyId)->forceDelete();
+            });
+            Log::info("Stories and related pivot table data permanently deleted");   
+        }
+        if($categoryId->isNotEmpty()){
+            DB::transaction(function() use($categoryId) {
+                DB::table('category_story')->whereIn('category_id', $categoryId)->delete();
+                Category::whereIn('id', $categoryId)->forceDelete();
+            },5);
+            Log::info("Category and related pivot table data permanently deleted");
+        }
+        if($authorId->isNotEmpty()){
+            DB::transaction(function() use($authorId) {
+                DB::table('author_story')->whereIn('author_id', $authorId)->delete();
+                Author::whereIn('id', $authorId)->forceDelete();
+            },5);
+            Log::info("Author and related pivot table data permanently deleted");
+        }
+        if($tagId->isNotEmpty()){
+            DB::transaction(function() use($tagId) {
+                DB::table('tag_story')->whereIn('tag_id', $tagId)->delete();
+                Tag::whereIn('id', $tagId)->forceDelete();
+            },5);
+            Log::info("Tag and related pivot table data permanently deleted");
         }
     }
 }
