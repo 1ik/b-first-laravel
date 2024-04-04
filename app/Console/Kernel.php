@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('backup:database')->everySixHours();
-         $schedule->command('delete-old-trash-items')->dailyAt('14:01');
+         $schedule->command('delete-old-trash-items')->dailyAt('01:00');
     }
     protected function commands(): void
     {
