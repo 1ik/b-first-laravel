@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ForgetPasswordController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/login', function () {
+    return view('login');
+});
 Route::get('/reset-password/{token}', [ForgetPasswordController::class, 'resetPassword'])->name('password.reset');
 Route::post('/reset-password', [ForgetPasswordController::class, 'passwordStore'])->name('password.store');
+
+Route::get('/auth/{provider}/redirect', [AuthController::class, 'redirect']);
+Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
