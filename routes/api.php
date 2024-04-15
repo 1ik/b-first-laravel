@@ -40,7 +40,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
 
         //Social Login------------       
-        Route::get('/auth/{provider}/login', [AuthController::class, 'redirect']);
+        Route::get('/auth/{provider}/login', [AuthController::class, 'socialLogin']);
         Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
         
         //All stories for sitemap

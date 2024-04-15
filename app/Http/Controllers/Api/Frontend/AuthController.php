@@ -6,13 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function redirect(string $provider)
+    public function socialLogin(Request $request,string $provider=null)
     {
-        return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+        if ($provider) {
+            return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+        }else {
+            $credentials = $request->only('email', 'password');
+            if (Auth::attempt($credentials) && Auth::user()->is_public == 1) {
+                $user = Auth::user();
+                return response()->json(['user' => $user]);
+            } else {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+        }
     }
 
     public function callback(string $provider)

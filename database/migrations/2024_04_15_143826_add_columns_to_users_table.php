@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('is_public')->after('remember_token')->default(0);
             $table->string('avatar')->after('remember_token')->nullable();
             $table->string('provider', 20)->after('remember_token')->nullable();
             $table->string('provider_id')->after('remember_token')->nullable();
