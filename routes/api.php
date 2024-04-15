@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MediaLibraryController;
+use App\Http\Controllers\Api\Frontend\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,10 @@ Route::group(['prefix'=>'v1'], function () {
         //Featured-stories--------
         Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
 
+        //Social Login------------       
+        Route::get('/auth/{provider}/login', [AuthController::class, 'redirect']);
+        Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
+        
         //All stories for sitemap
         Route::group(['prefix' => 'sitemap'], function () {
           Route::get('/stories', [SiteMapController::class, 'sitemapStotries']);

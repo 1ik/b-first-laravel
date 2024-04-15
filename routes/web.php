@@ -24,5 +24,5 @@ Route::get('/login', function () {
 Route::get('/reset-password/{token}', [ForgetPasswordController::class, 'resetPassword'])->name('password.reset');
 Route::post('/reset-password', [ForgetPasswordController::class, 'passwordStore'])->name('password.store');
 
-Route::get('/auth/{provider}/redirect', [AuthController::class, 'redirect']);
-Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
+// Route::get('/auth/{provider}/redirect', [AuthController::class, 'redirect']);
+// Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
