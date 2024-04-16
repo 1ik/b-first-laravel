@@ -46,7 +46,7 @@ class AuthController extends Controller
 
     protected function loginOrCreateAccount($providerUser, $provider)
     {
-        return $providerUser;
+        dd($providerUser);
         $user = User::where('email', $providerUser->getEmail())->first();
 
         if($user){
