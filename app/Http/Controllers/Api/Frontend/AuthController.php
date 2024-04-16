@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,19 +12,23 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+    public function login(LoginRequest $request){
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            if (auth()->user()->is_public==1) {
+                $user = Auth::user();
+                return response()->json(['user' => $user]);   
+            } else {
+                return response()->json(['error' => 'This account is not public'], 403);
+            }
+        } else {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+    }
+
     public function socialLogin(Request $request,string $provider=null)
     {
-        if ($provider) {
-            return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-        }else {
-            $credentials = $request->only('email', 'password');
-            if (Auth::attempt($credentials) && Auth::user()->is_public == 1) {
-                $user = Auth::user();
-                return response()->json(['user' => $user]);
-            } else {
-                return response()->json(['error' => 'Invalid credentials'], 401);
-            }
-        }
+        return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
     }
 
     public function callback(string $provider)
@@ -41,6 +46,7 @@ class AuthController extends Controller
 
     protected function loginOrCreateAccount($providerUser, $provider)
     {
+        return $providerUser;
         $user = User::where('email', $providerUser->getEmail())->first();
 
         if($user){

@@ -39,7 +39,8 @@ Route::group(['prefix'=>'v1'], function () {
         //Featured-stories--------
         Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
 
-        //Social Login------------       
+        //Social Login------------
+        Route::get('/login', [AuthController::class, 'login']);       
         Route::get('/auth/{provider}/login', [AuthController::class, 'socialLogin']);
         Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
         
