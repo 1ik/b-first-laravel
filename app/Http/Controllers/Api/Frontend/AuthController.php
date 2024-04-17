@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SocialLoginRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class AuthController extends Controller
         }
     }
 
-    public function socialLogin(Request $request)
+    public function socialLogin(SocialLoginRequest $request)
     {
 
         if($request->provider == 'google'){
