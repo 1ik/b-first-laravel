@@ -41,8 +41,8 @@ Route::group(['prefix'=>'v1'], function () {
 
         //Social Login------------
         Route::get('/login', [AuthController::class, 'login']);       
-        Route::get('/auth/{provider}/login', [AuthController::class, 'socialLogin']);
-        Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
+        Route::get('/social-login', [AuthController::class, 'socialLogin']);
+
         
         //All stories for sitemap
         Route::group(['prefix' => 'sitemap'], function () {

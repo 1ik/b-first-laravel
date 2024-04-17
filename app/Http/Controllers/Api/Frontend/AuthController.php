@@ -16,8 +16,11 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             if (auth()->user()->is_public==1) {
-                $user = Auth::user();
-                return response()->json(['user' => $user]);   
+                $user = User::where('email', $request->email)->first();
+                return response()->json([
+                    'data'  => $user,
+                    'token' => $user->createToken('visit-user-token')->plainTextToken,
+                ]);   
             } else {
                 return response()->json(['error' => 'This account is not public'], 403);
             }
@@ -26,49 +29,78 @@ class AuthController extends Controller
         }
     }
 
-    public function socialLogin(Request $request,string $provider=null)
+    public function socialLogin(Request $request)
     {
-        return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-    }
 
-    public function callback(string $provider)
-    {
-        try {
-            $user = Socialite::driver($provider)->stateless()->user();
-        } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
+        if($request->provider == 'google'){
+            $user = User::where('email', $request->email)->first();
+
+            if($user){
+                $user->update([
+                    'avatar' => $request->photo_url,
+                    'provider' => $request->provider,
+                    'provider_id' => $request->provider_id,
+                    'access_token' => $request->access_token
+                ]);
+            }else{
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'avatar' => $request->photo_url,
+                    'provider' => $request->provider,
+                    'provider_id' => $request->provider_id,
+                    'access_token' => $request->access_token,
+                    'password' => ''
+                ]);
+            }
+    
+            return response()->json([
+                'message'   => 'Successfully Login Complete',
+                'data'      => $user,
+                'token'     => $user->createToken('visit-user-token')->plainTextToken
+            ], 200);   
         }
-
-        return empty( $user->email)
-            ? "No id returned from {$provider} provider."
-            : $this->loginOrCreateAccount($user, $provider);
     }
 
-    protected function loginOrCreateAccount($providerUser, $provider)
-    {
-        $user = User::where('email', $providerUser->getEmail())->first();
+    // public function callback(string $provider)
+    // {
+    //     try {
+    //         $user = Socialite::driver($provider)->stateless()->user();
+    //     } catch (Exception $e) {
+    //         return $this->sendFailedResponse($e->getMessage());
+    //     }
 
-        if($user){
-            $user->update([
-                'avatar' => $providerUser->avatar,
-                'provider' => $provider,
-                'provider_id' => $providerUser->id,
-                'access_token' => $providerUser->token
-            ]);
-        }else{
-            $user = User::create([
-                'name' => $providerUser->getName(),
-                'email' => $providerUser->getEmail(),
-                'avatar' => $providerUser->getAvatar(),
-                'provider' => $provider,
-                'provider_id' => $providerUser->getId(),
-                'access_token' => $providerUser->token,
-                'password' => ''
-            ]);
-        }
+    //     return empty( $user->email)
+    //         ? "No id returned from {$provider} provider."
+    //         : $this->loginOrCreateAccount($user, $provider);
+    // }
 
-        return response()->json([
-            'message'   => 'Successfully Login Complete',
-        ], 200);
-    }
+    // protected function loginOrCreateAccount($providerUser, $provider)
+    // {
+    //     dd($providerUser);
+    //     $user = User::where('email', $providerUser->getEmail())->first();
+
+    //     if($user){
+    //         $user->update([
+    //             'avatar' => $providerUser->avatar,
+    //             'provider' => $provider,
+    //             'provider_id' => $providerUser->id,
+    //             'access_token' => $providerUser->token
+    //         ]);
+    //     }else{
+    //         $user = User::create([
+    //             'name' => $providerUser->getName(),
+    //             'email' => $providerUser->getEmail(),
+    //             'avatar' => $providerUser->getAvatar(),
+    //             'provider' => $provider,
+    //             'provider_id' => $providerUser->getId(),
+    //             'access_token' => $providerUser->token,
+    //             'password' => ''
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'message'   => 'Successfully Login Complete',
+    //     ], 200);
+    // }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('avatar')->after('remember_token')->nullable();
             $table->string('provider', 20)->after('remember_token')->nullable();
             $table->string('provider_id')->after('remember_token')->nullable();
-            $table->string('access_token')->after('remember_token')->nullable();
+            $table->text('access_token')->after('remember_token')->nullable();
         });
     }
 
@@ -26,6 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_public');
             $table->dropColumn('avatar');
             $table->dropColumn('provider');
             $table->dropColumn('provider_id');
