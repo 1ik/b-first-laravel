@@ -50,6 +50,7 @@ class AuthController extends Controller
                     'provider' => $request->provider,
                     'provider_id' => $request->provider_id,
                     'access_token' => $request->access_token,
+                    'is_public' => 1,
                     'password' => ''
                 ]);
             }
