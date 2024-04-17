@@ -24,7 +24,8 @@ class User extends Authenticatable
         'avatar',
         'provider',
         'provider_id',
-        'access_token'
+        'access_token',
+        'is_public'
     ];
 
     /**
