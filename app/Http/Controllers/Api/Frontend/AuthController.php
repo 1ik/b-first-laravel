@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SocialLoginRequest;
+use App\Http\Requests\UserRegistrationRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -64,6 +66,19 @@ class AuthController extends Controller
         }
     }
 
+    public function register(UserRegistrationRequest $request){
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'is_public' => 1,
+            'password' => bcrypt($request->input('password')),
+        ]);
+    
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+        ], JsonResponse::HTTP_CREATED);
+    }
     // public function callback(string $provider)
     // {
     //     try {

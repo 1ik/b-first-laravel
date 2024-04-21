@@ -13,7 +13,7 @@ class FeaturedStories extends Model
     protected $casts = [
         'story_ids' => 'array'
     ];
-
+    
     // public function getStoryIds()
     // {
     //     return $this->story_ids;
