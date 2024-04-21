@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SocialLoginRequest;
 use App\Http\Requests\UserRegistrationRequest;
+use App\Jobs\SendActivationEmail;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -73,7 +74,9 @@ class AuthController extends Controller
             'is_public' => 1,
             'password' => bcrypt($request->input('password')),
         ]);
-    
+
+        dispatch(new SendActivationEmail($user));
+
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user,
