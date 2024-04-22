@@ -36,6 +36,9 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/categories/{category}/stories', [FrontendController::class, 'categoryStories']);
         Route::get('/story/details/{story}', [FrontendController::class, 'storyDetails']);
 
+        //Preview-story---------
+        Route::get('/preview-story/{story}', [FrontendController::class, 'previewStory']);
+
         //Featured-stories--------
         Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
 

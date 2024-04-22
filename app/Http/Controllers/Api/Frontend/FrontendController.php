@@ -41,4 +41,37 @@ class FrontendController extends Controller
         ], 200);
     }
 
+    public function previewStory(Story $story){
+        $story_image = json_decode($story->meta);
+
+        $data = '<div
+        style="
+                max-width: 820px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px;
+                background-color: #F2F4F7;
+                border-radius: 5px; 
+                "
+            >
+            <h2 style="font-size: 1.5rem; font-family: system-ui">
+                <a
+                style="text-decoration: none; color: #101828;"
+                href="https://bangladeshfirst.com/story/detials/'.$story->id.'"
+                  target="_blank"
+                  >
+                  '.$story->title.'
+                  </a>
+                  </h2>
+                  <img
+                  style="width: 200px; border-radius: 5px;"
+                  src="https://images.bangladeshfirst.com/resize?width=200&height=112&format=webp&quality=85&path='.$story_image->featured_image.'"
+                  alt="placeholder-img"
+                  />
+                  </div>';
+                  
+        return $data;          
+    }
+
 }
