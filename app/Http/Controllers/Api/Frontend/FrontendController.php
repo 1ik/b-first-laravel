@@ -43,6 +43,7 @@ class FrontendController extends Controller
 
     public function previewStory(Story $story){
         $story_image = json_decode($story->meta);
+        $title = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', str_replace(' ', '-', $story->title)));
 
         $data = '<div
         style="
@@ -58,7 +59,7 @@ class FrontendController extends Controller
             <h2 style="font-size: 1.5rem; font-family: system-ui">
                 <a
                 style="text-decoration: none; color: #101828;"
-                href="https://bangladeshfirst.com/story/detials/'.$story->id.'"
+                href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
                   target="_blank"
                   >
                   '.$story->title.'
@@ -70,7 +71,7 @@ class FrontendController extends Controller
                   alt="placeholder-img"
                   />
                   </div>';
-                  
+
         return $data;          
     }
 
