@@ -8,6 +8,7 @@ use App\Http\Requests\TagUpdateRequest;
 use App\Http\Resources\TagResource;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -26,7 +27,8 @@ class TagController extends Controller
     public function store(TagStoreRequest $request)
     {
         $tag = Tag::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'created_by' => Auth::user()->id
         ]);
 
         return response()->json(['message' => 'Tag created successfully', 'data' => $tag], 201);

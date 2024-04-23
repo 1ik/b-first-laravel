@@ -12,7 +12,7 @@ class Story extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['title','meta','content','deleted_at'];
+    protected $fillable = ['title','meta','content','deleted_at','created_by','updated_by'];
 
     public function setMetaAttribute($value)
     {
@@ -32,5 +32,10 @@ class Story extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class,'tag_story');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'created_by');
     }
 }

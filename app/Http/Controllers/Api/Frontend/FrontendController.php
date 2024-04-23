@@ -44,33 +44,71 @@ class FrontendController extends Controller
     public function previewStory(Story $story){
         $story_image = json_decode($story->meta);
         $title = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', str_replace(' ', '-', $story->title)));
-
-        $data = '<div
-        style="
-                max-width: 820px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 12px;
-                background-color: #F2F4F7;
-                border-radius: 5px; 
-                "
-            >
-            <h2 style="font-size: 1.5rem; font-family: system-ui">
-                <a
-                style="text-decoration: none; color: #101828;"
-                href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
-                  target="_blank"
-                  >
-                  '.$story->title.'
-                  </a>
-                  </h2>
-                  <img
-                  style="width: 200px; border-radius: 5px;"
-                  src="https://images.bangladeshfirst.com/resize?width=200&height=112&format=webp&quality=85&path='.$story_image->featured_image.'"
-                  alt="placeholder-img"
-                  />
-                  </div>';
+        $featured_image = isset($story_image->featured_image) ? $story_image->featured_image : null;
+        $data = '<!DOCTYPE html>
+                  <html lang="en">
+                    <head>
+                      <meta charset="UTF-8" />
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                      <style>
+                        html {
+                          overflow: hidden;
+                          font-family: system-ui;
+                        }
+                        div {
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        }
+                        h2 {
+                          font-size: 1.2rem;
+                        }
+                        a {
+                          text-decoration: none;
+                          color: #101828;
+                          transition: 200ms;
+                        }
+                        a:hover {
+                          color: #1779BA;
+                        }
+                        img {
+                          width: 200px;
+                          height: 116px;
+                          object-fit: cover;
+                          border-radius: 5px;
+                        }
+                  
+                        @media (max-width: 500px) {
+                          html {
+                            height: 300px;
+                          }
+                          div {
+                            flex-direction: column-reverse;
+                          }
+                        }
+                      </style>
+                      <title>news-preview</title>
+                    </head>
+                    <body>
+                      <div>
+                          <h2>
+                            <a href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
+                              target="_blank"
+                              >
+                              '.$story->title.'
+                              </a>
+                              </h2>
+                        
+                              <a href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
+                              target="_blank"
+                              >
+                              <img src="https://images.bangladeshfirst.com/resize?width=200&height=112&format=webp&quality=85&path='.$featured_image.'"
+                              alt="placeholder-img"
+                              />
+                              </a>
+                              </div>
+                    </body>
+                  </html>';
 
         return $data;          
     }

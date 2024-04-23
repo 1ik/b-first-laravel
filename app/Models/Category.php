@@ -13,7 +13,7 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
     
-    protected $fillable = ['name','slug','meta','deleted_at'];
+    protected $fillable = ['name','slug','meta','deleted_at','created_by','updated_by'];
 
     public function setNameAttribute($value)
     {
@@ -29,5 +29,9 @@ class Category extends Model
     public function stories(): BelongsToMany
     {
         return $this->belongsToMany(Story::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class,'created_by');
     }
 }

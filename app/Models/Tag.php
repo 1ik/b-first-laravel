@@ -14,7 +14,7 @@ class Tag extends Model
     use HasFactory;
     use SoftDeletes;
     
-    protected $fillable = ['name','slug','deleted_at'];
+    protected $fillable = ['name','slug','deleted_at','created_by','updated_by'];
 
     public function setNameAttribute($value)
     {
@@ -25,5 +25,10 @@ class Tag extends Model
     public function stories(): BelongsToMany
     {
         return $this->belongsToMany(Story::class,'tag_story');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'created_by');
     }
 }

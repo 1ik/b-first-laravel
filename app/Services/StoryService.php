@@ -12,6 +12,7 @@ class StoryService{
     public function store(array $data){
 
         DB::transaction(function() use($data) {
+            $data['created_by'] = Auth::user()->id;
             $story = Story::create($data);
             $story->authors()->attach($data['authors']);
             $story->categories()->attach($data['categories']);

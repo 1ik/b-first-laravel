@@ -7,6 +7,7 @@ use App\Http\Requests\AuthorRequest;
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorController extends Controller
 {
@@ -24,6 +25,7 @@ class AuthorController extends Controller
     {
         $author = Author::create([
             'name' => $request->name,
+            'created_by' => Auth::user()->id
         ]);
         return response()->json(['message' => 'Author created successfully', 'data' => $author], 201);
     }

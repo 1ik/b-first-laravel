@@ -8,6 +8,7 @@ use App\Http\Requests\CategoryUpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -28,6 +29,7 @@ class CategoryController extends Controller
         $category = Category::create([
             'name' => $request->name,
             'meta' => $request->meta,
+            'created_by' => Auth::user()->id
         ]);
         return response()->json(['message' => 'Category created successfully', 'data' => $category], 201);
     }
