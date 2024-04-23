@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\Backend\TrashController;
+use App\Http\Controllers\Api\backend\TrendyTopicController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
@@ -69,6 +70,10 @@ Route::group(['prefix'=>'v1'], function () {
         //Featured Stories------
         Route::get('/stories-search', [FeaturedStoryController::class, 'searchStories']);
         Route::post('/featured/stories/create', [FeaturedStoryController::class, 'createFeaturedStory']);
+
+        // Trendy topic -----
+        Route::get('/trendy-topic-search', [TrendyTopicController::class, 'searchTrendyTopic']);
+        Route::post('/trendy-topic/create', [TrendyTopicController::class, 'createTrendyTopic']);
 
         //Trash----------------
         Route::get('/trash-items/{type}', [TrashController::class,'trashItems']);
