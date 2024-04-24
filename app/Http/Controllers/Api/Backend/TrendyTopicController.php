@@ -30,7 +30,7 @@ class TrendyTopicController extends Controller
             $message = 'Data updated successfully';
             $updatedRecord = TrendyTopic::find($record->id);
         } else {
-            $updatedRecord = TrendyTopic::create([
+            $updatedRecord = TrendyTopic::create([ 
                 'tag_ids' => $tag_ids,
             ]);
             $message = 'Data inserted successfully';

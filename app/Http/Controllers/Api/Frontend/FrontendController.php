@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\StoryResource;
+use App\Http\Resources\TagResource;
 use App\Models\Category;
+use App\Models\FeaturedStories;
 use App\Models\Story;
+use App\Models\Tag;
+use App\Models\TrendyTopic;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -113,4 +117,24 @@ class FrontendController extends Controller
         return $data;          
     }
 
+    public function categoryFeaturedStories($category){
+      $featured_stories = FeaturedStories::where('category_id',$category)->first();
+      $stories = []; 
+      if ($featured_stories) {
+          $storyIdsString = implode(',', $featured_stories->story_ids);
+          $stories = Story::with(['authors', 'categories', 'tags'])->whereIn('id', $featured_stories->story_ids)->orderByRaw("FIELD(id,$storyIdsString)")->get();
+      }
+
+      return StoryResource::collection($stories);
+    }
+
+    public function trendyTopics(){
+       $trendy_topics = TrendyTopic::first();
+       $tags = [];
+       if($trendy_topics){
+          $tagIdsString = implode(',', $trendy_topics->tag_ids);
+          $tags = Tag::whereIn('id', $trendy_topics->tag_ids)->orderByRaw("FIELD(id,$tagIdsString)")->get();
+       }
+       return TagResource::collection($tags);
+    }
 }

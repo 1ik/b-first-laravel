@@ -41,7 +41,10 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/preview-story/{story}', [FrontendController::class, 'previewStory']);
 
         //Featured-stories--------
-        Route::get('/categories/{category}/featured-stories', [FeaturedStoryController::class, 'categoryFeaturedStories']);
+        Route::get('/categories/{category}/featured-stories', [FrontendController::class, 'categoryFeaturedStories']);
+
+        //Featured-stories--------
+        Route::get('/trendy-topics', [FrontendController::class, 'trendyTopics']);
 
         //Social Login------------
         Route::post('/login', [AuthController::class, 'login']);       
