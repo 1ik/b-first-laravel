@@ -13,11 +13,11 @@ class ActivationEmailNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $emailData;
+    public $userData;
 
     public function __construct($data)
     {
-        $this->emailData = $data;
+        $this->userData = $data;
     }
 
  
