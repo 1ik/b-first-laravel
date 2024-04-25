@@ -23,7 +23,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Your account has been activated successfully!</h1>
+       @if(session('message'))
+           <h1>{{ session('message') }}</h1>
+        @endif
+        
     </div>
 </body>
 </html>

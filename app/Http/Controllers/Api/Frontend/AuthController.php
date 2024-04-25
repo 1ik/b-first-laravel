@@ -90,7 +90,10 @@ class AuthController extends Controller
 
     public function activeUserAccount(User $user){
         $user->update(['is_active' => 1]);
-        return redirect()->route('activation-success');
+        if($user->is_active == 1){
+            return redirect()->route('activation-success')->with('message', 'Your account is already activated!');
+        }
+        return redirect()->route('activation-success')->with('message', 'Your account has been activated successfully!');
     }
 
     public function showSuccess()
