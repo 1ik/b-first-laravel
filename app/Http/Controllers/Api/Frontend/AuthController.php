@@ -7,11 +7,13 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SocialLoginRequest;
 use App\Http\Requests\UserRegistrationRequest;
 use App\Jobs\SendActivationEmail;
+use App\Mail\ActivationEmailNotification;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Kreait\Firebase\Auth as firebaseAuth;
@@ -28,6 +30,9 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            if (auth()->user()->is_active==0) {
+                return response()->json(['error' => 'Your account is not active, Please active your account from your email.'], 403);
+            }
             if (auth()->user()->is_public==1) {
                 $user = User::where('email', $request->email)->first();
                 return response()->json([
@@ -89,13 +94,27 @@ class AuthController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        dispatch(new SendActivationEmail($user));
+        Mail::to($user->email)->send(new ActivationEmailNotification($user));
 
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user,
         ], JsonResponse::HTTP_CREATED);
     }
+
+    public function activeUserAccount(User $user){
+        $user->update(['is_active' => 1]);
+        if($user->is_active == 1){
+            return redirect()->route('activation-success')->with('message', 'Your account is already activated!');
+        }
+        return redirect()->route('activation-success')->with('message', 'Your account has been activated successfully!');
+    }
+
+    public function showSuccess()
+    {
+        return view('email.success');
+    }
+
     // public function callback(string $provider)
     // {
     //     try {

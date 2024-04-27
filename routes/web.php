@@ -26,3 +26,6 @@ Route::post('/reset-password', [ForgetPasswordController::class, 'passwordStore'
 
 Route::get('/auth/{provider}/redirect', [AuthController::class, 'redirect']);
 Route::get('/auth/{provider}/callback', [AuthController::class, 'callback']);
+
+Route::get('/activate-account/{user}', [AuthController::class,'activeUserAccount'])->name('active-user-account');
+Route::get('/activation-success',  [AuthController::class,'showSuccess'])->name('activation-success');

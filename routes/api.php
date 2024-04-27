@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\Backend\TrashController;
-use App\Http\Controllers\Api\backend\TrendyTopicController;
+use App\Http\Controllers\Api\Backend\TrendyTopicController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
