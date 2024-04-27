@@ -13,9 +13,18 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
+use Kreait\Firebase\Auth as firebaseAuth;
 
 class AuthController extends Controller
 {
+    protected $firebase_auth;
+
+    public function __construct(firebaseAuth $auth_data)
+    {
+        $this->firebase_auth = $auth_data;
+    }
+
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -36,34 +45,39 @@ class AuthController extends Controller
     public function socialLogin(SocialLoginRequest $request)
     {
 
-        if($request->provider == 'google'){
-            $user = User::where('email', $request->email)->first();
-
-            if($user){
-                $user->update([
-                    'avatar' => $request->photo_url,
-                    'provider' => $request->provider,
-                    'provider_id' => $request->provider_id,
-                    'access_token' => $request->access_token
-                ]);
-            }else{
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'avatar' => $request->photo_url,
-                    'provider' => $request->provider,
-                    'provider_id' => $request->provider_id,
-                    'access_token' => $request->access_token,
-                    'is_public' => 1,
-                    'password' => ''
-                ]);
-            }
+        try{
+            if($request->provider == 'google'){
+                $verifiedIdToken = $this->firebase_auth->verifyIdToken($request->access_token);
+                $user = User::where('email', $request->email)->first();
     
-            return response()->json([
-                'message'   => 'Successfully Login Complete',
-                'data'      => $user,
-                'token'     => $user->createToken('visit-user-token')->plainTextToken
-            ], 200);   
+                if($user){
+                    $user->update([
+                        'avatar' => $request->photo_url,
+                        'provider' => $request->provider,
+                        'provider_id' => $request->provider_id,
+                        'access_token' => $request->access_token
+                    ]);
+                }else{
+                    $user = User::create([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'avatar' => $request->photo_url,
+                        'provider' => $request->provider,
+                        'provider_id' => $request->provider_id,
+                        'access_token' => $request->access_token,
+                        'is_public' => 1,
+                        'password' => ''
+                    ]);
+                }
+        
+                return response()->json([
+                    'message'   => 'Successfully Login Complete',
+                    'data'      => $user,
+                    'token'     => $user->createToken('visit-user-token')->plainTextToken
+                ], 200);   
+            }
+        }catch(FailedToVerifyToken $e) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
 
