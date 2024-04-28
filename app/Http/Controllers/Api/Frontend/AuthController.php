@@ -20,13 +20,6 @@ use Kreait\Firebase\Auth as firebaseAuth;
 
 class AuthController extends Controller
 {
-    protected $firebase_auth;
-
-    public function __construct(firebaseAuth $auth_data)
-    {
-        $this->firebase_auth = $auth_data;
-    }
-
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -52,7 +45,6 @@ class AuthController extends Controller
 
         try{
             if($request->provider == 'google'){
-                $verifiedIdToken = $this->firebase_auth->verifyIdToken($request->access_token);
                 $user = User::where('email', $request->email)->first();
     
                 if($user){
