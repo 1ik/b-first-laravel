@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Models\TrendyTopic;
 use Illuminate\Http\Request;
 
+
 class FrontendController extends Controller
 {
     public function allCategories(){
