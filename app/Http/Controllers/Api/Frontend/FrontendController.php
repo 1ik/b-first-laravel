@@ -137,4 +137,9 @@ class FrontendController extends Controller
        }
        return TagResource::collection($tags);
     }
+
+    public function trendingTopicStories(Request $request,Tag $tag){
+         $pageSize = $request->input('size', 20);
+         return $tag->stories()->orderBy('id', 'desc')->paginate($pageSize);
+    }
 }
