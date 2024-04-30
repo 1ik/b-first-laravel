@@ -29,7 +29,8 @@ class CategoryController extends Controller
         $category = Category::create([
             'name' => $request->name,
             'meta' => $request->meta,
-            'created_by' => Auth::user()->id
+            'created_by' => Auth::user()->id,
+            'color_code' => $request->color_code
         ]);
         return response()->json(['message' => 'Category created successfully', 'data' => $category], 201);
     }
@@ -49,6 +50,7 @@ class CategoryController extends Controller
         $data = $category->update([
             'name' => $request->name,
             'meta' => $request->meta,
+            'color_code' => $request->color_code
         ]);
 
         return response()->json([
