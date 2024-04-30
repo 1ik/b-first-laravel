@@ -13,7 +13,7 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
     
-    protected $fillable = ['name','slug','meta','deleted_at','created_by','updated_by'];
+    protected $fillable = ['name','slug','meta','color_code','deleted_at','created_by','updated_by'];
 
     public function setNameAttribute($value)
     {
