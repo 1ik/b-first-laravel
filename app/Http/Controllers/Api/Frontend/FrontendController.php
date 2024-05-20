@@ -141,6 +141,8 @@ class FrontendController extends Controller
 
     public function trendingTopicStories(Request $request,Tag $tag){
          $pageSize = $request->input('size', 20);
-         return $tag->stories()->orderBy('id', 'desc')->paginate($pageSize);
+         $stories = $tag->stories()->orderBy('id', 'desc')->paginate($pageSize); 
+
+        return StoryResource::collection($stories);
     }
 }
