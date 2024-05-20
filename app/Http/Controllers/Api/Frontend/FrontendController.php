@@ -145,4 +145,11 @@ class FrontendController extends Controller
 
         return StoryResource::collection($stories);
     }
+
+    public function relatedStories(Request $request, Tag $tag){
+         $pageSize = $request->input('size', 20);
+         $stories = $tag->stories()->orderBy('id', 'desc')->paginate($pageSize); 
+
+        return StoryResource::collection($stories);
+    }
 }
