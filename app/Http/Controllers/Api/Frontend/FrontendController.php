@@ -146,10 +146,21 @@ class FrontendController extends Controller
         return StoryResource::collection($stories);
     }
 
-    public function relatedStories(Request $request, Tag $tag){
+    public function relatedStories(Request $request){
+         $tagIds = explode(',', $request->input('tags', ''));
          $pageSize = $request->input('size', 20);
-         $stories = $tag->stories()->orderBy('id', 'desc')->paginate($pageSize); 
-
-        return StoryResource::collection($stories);
+  
+         if (empty($tagIds) || $tagIds[0] === '') {
+             return response()->json([
+                 'success' => false,
+                 'message' => 'No tag IDs provided'
+             ], 400);
+         }
+  
+         $stories = Story::whereHas('tags', function ($query) use ($tagIds) {
+             $query->whereIn('id', $tagIds);
+         })->orderBy('id', 'desc')->paginate($pageSize);
+  
+         return StoryResource::collection($stories);
     }
 }
