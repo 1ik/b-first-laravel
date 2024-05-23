@@ -11,14 +11,14 @@ use Illuminate\Http\Request;
 
 class RecommendedStoryController extends Controller
 {
-    public function searchStories(Request $request){
-        $title = $request->title;
-        $stories = [];
-        if($title){
-            $stories = Story::with(['authors', 'categories', 'tags'])->where('title','like','%'.$request->title.'%')->orderBy('id','desc')->paginate(10);
-        }
-        return StoryResource::collection($stories);
-    }
+    // public function searchStories(Request $request){
+    //     $title = $request->title;
+    //     $stories = [];
+    //     if($title){
+    //         $stories = Story::with(['authors', 'categories', 'tags'])->where('title','like','%'.$request->title.'%')->orderBy('id','desc')->paginate(10);
+    //     }
+    //     return StoryResource::collection($stories);
+    // }
 
     public function createRecommendedStory(RecommendedStoryRequest $request)
     {

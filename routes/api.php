@@ -45,7 +45,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/categories/{category}/featured-stories', [FrontendController::class, 'categoryFeaturedStories']);
 
         //Recommended-stories--------
-        Route::get('recommended-stories', [FrontendController::class, 'recommendedStories']);
+        Route::get('/recommended-stories', [FrontendController::class, 'recommendedStories']);
 
         //Trending-stories--------
         Route::get('/trendy-topics', [FrontendController::class, 'trendyTopics']);
@@ -87,7 +87,7 @@ Route::group(['prefix'=>'v1'], function () {
         Route::post('/trendy-topic/create', [TrendyTopicController::class, 'createTrendyTopic']);
 
         //Recommended Stories---------
-        Route::get('/stories-search', [RecommendedStoryController::class, 'searchStories']);
+        // Route::get('/stories-search', [RecommendedStoryController::class, 'searchStories']);
         Route::post('/recommended-stories/create', [RecommendedStoryController::class, 'createRecommendedStory']);
 
         //Trash----------------
