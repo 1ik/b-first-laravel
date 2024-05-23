@@ -8,6 +8,7 @@ use App\Http\Resources\StoryResource;
 use App\Http\Resources\TagResource;
 use App\Models\Category;
 use App\Models\FeaturedStories;
+use App\Models\RecommendedStories;
 use App\Models\Story;
 use App\Models\Tag;
 use App\Models\TrendyTopic;
@@ -127,6 +128,20 @@ class FrontendController extends Controller
       }
 
       return StoryResource::collection($stories);
+    }
+
+    public function recommendedStories(){
+      $recommendedStories = RecommendedStories::first();
+        $stories = [];
+        if ($recommendedStories) {
+            $storyIdsString = implode(',', $recommendedStories->story_ids);
+            $stories = Story::with(['authors', 'categories', 'tags'])
+                ->whereIn('id', $recommendedStories->story_ids)
+                ->orderByRaw("FIELD(id, $storyIdsString)")
+                ->get();
+        }
+
+        return StoryResource::collection($stories);
     }
 
     public function trendyTopics(){

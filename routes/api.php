@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Backend\TrashController;
 use App\Http\Controllers\Api\Backend\TrendyTopicController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FeaturedStoryController;
+use App\Http\Controllers\Api\RecommendedStoryController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\Frontend\FrontendController;
 use App\Http\Controllers\Api\Frontend\SiteMapController;
@@ -42,6 +43,9 @@ Route::group(['prefix'=>'v1'], function () {
 
         //Featured-stories--------
         Route::get('/categories/{category}/featured-stories', [FrontendController::class, 'categoryFeaturedStories']);
+
+        //Recommended-stories--------
+        Route::get('/recommended-stories', [FrontendController::class, 'recommendedStories']);
 
         //Trending-stories--------
         Route::get('/trendy-topics', [FrontendController::class, 'trendyTopics']);
@@ -81,6 +85,10 @@ Route::group(['prefix'=>'v1'], function () {
         // Trendy topic -----
         Route::get('/trendy-topic-search', [TrendyTopicController::class, 'searchTrendyTopic']);
         Route::post('/trendy-topic/create', [TrendyTopicController::class, 'createTrendyTopic']);
+
+        //Recommended Stories---------
+        // Route::get('/stories-search', [RecommendedStoryController::class, 'searchStories']);
+        Route::post('/recommended-stories/create', [RecommendedStoryController::class, 'createRecommendedStory']);
 
         //Trash----------------
         Route::get('/trash-items/{type}', [TrashController::class,'trashItems']);
