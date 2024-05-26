@@ -91,6 +91,8 @@ class FrontendController extends Controller
                           div {
                             flex-direction: column-reverse;
                           }
+                          img {
+                            display: none;
                         }
                       </style>
                       <title>news-preview</title>
@@ -108,7 +110,7 @@ class FrontendController extends Controller
                               <a href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
                               target="_blank"
                               >
-                              <img src="https://images.bangladeshfirst.com/resize?width=200&height=112&format=webp&quality=85&path='.$featured_image.'"
+                              <img src="https://images.bangladeshfirst.com/smartCrop?width=200&height=112&format=webp&quality=85&path='.$featured_image.'"
                               alt="placeholder-img"
                               />
                               </a>
