@@ -119,12 +119,14 @@ class FrontendController extends Controller
         return $data;          
     }
 
-    public function categoryFeaturedStories($category){
+    public function categoryFeaturedStories(Request $request, $category){
+      $size = $request-> input('size', 11);
+
       $featured_stories = FeaturedStories::where('category_id',$category)->first();
       $stories = []; 
       if ($featured_stories) {
           $storyIdsString = implode(',', $featured_stories->story_ids);
-          $stories = Story::with(['authors', 'categories', 'tags'])->whereIn('id', $featured_stories->story_ids)->orderByRaw("FIELD(id,$storyIdsString)")->get();
+          $stories = Story::with(['authors', 'categories', 'tags'])->whereIn('id', $featured_stories->story_ids)->orderByRaw("FIELD(id,$storyIdsString)")->take($size)->get();
       }
 
       return StoryResource::collection($stories);
