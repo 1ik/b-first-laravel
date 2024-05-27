@@ -49,7 +49,7 @@ Route::group(['prefix'=>'v1'], function () {
 
         //Trending-stories--------
         Route::get('/trendy-topics', [FrontendController::class, 'trendyTopics']);
-        Route::get('/trending-topics/{tag}', [FrontendController::class, 'trendingTopicStories']);
+        Route::get('/topic/{tag}', [FrontendController::class, 'trendingTopicStories']);
 
         //Related-stories-------
         Route::get('/related-stories', [FrontendController::class, 'relatedStories']);
