@@ -124,8 +124,10 @@ class GenerateSitemap extends Command
         }
 
         $sitemapIndex = SitemapIndex::create();
-        $chunkSize = 100;
+        $chunkSize = 10000;
         $index = 1;
+
+        $sitemapIndex->add("/sitemaps/sitemap_static.xml");
 
         Story::whereNull('deleted_at')->orderBy('id')->chunk($chunkSize, function ($stories) use ($sitemapFolder, $sitemapIndex, &$index) {
             $sitemap = Sitemap::create()
@@ -149,7 +151,6 @@ class GenerateSitemap extends Command
             $index++;
         });
 
-        $sitemapIndex->add("/sitemaps/sitemap_static.xml");
 
         $sitemapIndex->writeToFile("{$sitemapFolder}/sitemap.xml");
     }
