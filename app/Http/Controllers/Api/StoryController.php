@@ -12,12 +12,7 @@ use App\Models\Story;
 use App\Models\Tag;
 use App\Services\StoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\SitemapIndex;
-use Spatie\Sitemap\Tags\Url;
-use Illuminate\Support\Facades\File;
 
 class StoryController extends Controller
 {
@@ -41,8 +36,6 @@ class StoryController extends Controller
     {
         $storyService->store($request->validated());
 
-        $this->updateSitemap();
-
         return response()->json(['message' => 'Story created successfully', 'data' => true], 201);
     }
 
@@ -59,7 +52,6 @@ class StoryController extends Controller
     public function update(StoryStoreRequest $request, Story $story, StoryService $storyService)
     {
         $storyService->update($story,$request->validated());
-        $this->updateSitemap();
         return response()->json([
             'message' => 'Story updated successfully',
             'data'    => true
@@ -87,17 +79,10 @@ class StoryController extends Controller
             'deleted_at' => now()
         ]);
 
-        $this->updateSitemap();
-
         return response()->json([
             'message' => 'Story deleted successfully',
             'data'    => null,
         ], 200);
-    }
-
-    protected function updateSitemap()
-    {
-        Artisan::call('sitemap:generate');
     }
 
 }
