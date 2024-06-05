@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoryStoreRequest;
 use App\Http\Resources\StoryResource;
+use App\Jobs\GenerateDynamicSitemap;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\FeaturedStories;
@@ -36,6 +37,8 @@ class StoryController extends Controller
     {
         $storyService->store($request->validated());
 
+        dispatch(new GenerateDynamicSitemap());
+
         return response()->json(['message' => 'Story created successfully', 'data' => true], 201);
     }
 
@@ -52,6 +55,9 @@ class StoryController extends Controller
     public function update(StoryStoreRequest $request, Story $story, StoryService $storyService)
     {
         $storyService->update($story,$request->validated());
+
+        dispatch(new GenerateDynamicSitemap());
+
         return response()->json([
             'message' => 'Story updated successfully',
             'data'    => true
@@ -79,6 +85,8 @@ class StoryController extends Controller
             'deleted_at' => now()
         ]);
 
+        dispatch(new GenerateDynamicSitemap());
+        
         return response()->json([
             'message' => 'Story deleted successfully',
             'data'    => null,

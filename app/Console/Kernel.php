@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     {
         //  $schedule->command('backup:database')->everySixHours();
          $schedule->command('delete-old-trash-items')->dailyAt('01:00');
+         $schedule->command('sitemap:generate')->daily();
     }
     protected function commands(): void
     {
