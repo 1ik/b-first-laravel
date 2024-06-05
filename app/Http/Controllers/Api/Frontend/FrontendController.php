@@ -100,17 +100,17 @@ class FrontendController extends Controller
                     <body>
                       <div>
                           <h2>
-                            <a href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
+                            <a href="https://bfirst.news/news/'.$story->id.'/'.$title.'"
                               target="_blank"
                               >
                               '.$story->title.'
                               </a>
                               </h2>
                         
-                              <a href="https://bangladeshfirst.com/news/'.$story->id.'/'.$title.'"
+                              <a href="https://bfirst.news/news/'.$story->id.'/'.$title.'"
                               target="_blank"
                               >
-                              <img src="https://images.bangladeshfirst.com/smartcrop?width=200&height=112&format=webp&quality=85&path='.$featured_image.'"
+                              <img src="https://images.bfirst.news/smartcrop?width=200&height=112&format=webp&quality=85&path='.$featured_image.'"
                               alt="placeholder-img"
                               />
                               </a>
