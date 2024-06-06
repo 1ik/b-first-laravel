@@ -7,9 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\Tags\Url;
-use Illuminate\Support\Facades\File;
 
 class GenerateStaticSitemap implements ShouldQueue
 {
@@ -17,88 +14,49 @@ class GenerateStaticSitemap implements ShouldQueue
 
     public function handle()
     {
-        $sitemap = Sitemap::create()
-            ->add(Url::create('https://bfirst.news/')
-                ->setPriority(1.0)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/bangladesh')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/world')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/economy')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/feature')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/sports')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/tech')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/entertainment')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/education')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/interview')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/corporates')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/politics')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/latest')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/terms')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/privacy-policy')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/comments-policy')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/cookie-settings')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/accessibility')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/about-us')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()))
-            ->add(Url::create('https://bfirst.news/contact-us')
-                ->setPriority(0.8)
-                ->setChangeFrequency('never')
-                ->setLastModificationDate(now()));
+        $sitemapContent = $this->generateStaticSitemapContent();
+        file_put_contents(public_path('sitemaps/sitemap_static.xml'), $sitemapContent);
+    }
 
-        $sitemap->writeToFile(public_path('sitemaps/sitemap_static.xml'));
+    protected function generateStaticSitemapContent()
+    {
+        $urls = [
+            'https://bfirst.news/',
+            'https://bfirst.news/bangladesh',
+            'https://bfirst.news/world',
+            'https://bfirst.news/economy',
+            'https://bfirst.news/feature',
+            'https://bfirst.news/sports',
+            'https://bfirst.news/tech',
+            'https://bfirst.news/entertainment',
+            'https://bfirst.news/education',
+            'https://bfirst.news/interview',
+            'https://bfirst.news/corporates',
+            'https://bfirst.news/politics',
+            'https://bfirst.news/latest',
+            'https://bfirst.news/terms',
+            'https://bfirst.news/privacy-policy',
+            'https://bfirst.news/comments-policy',
+            'https://bfirst.news/cookie-settings',
+            'https://bfirst.news/accessibility',
+            'https://bfirst.news/about-us',
+            'https://bfirst.news/contact-us'
+        ];
+
+        $sitemapContent = '<?xml version="1.0" encoding="UTF-8"?>';
+        $sitemapContent .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+        foreach ($urls as $url) {
+            $sitemapContent .= '<url>';
+            $sitemapContent .= '<loc>' . $url . '</loc>';
+            $sitemapContent .= '<lastmod>' . now()->toAtomString() . '</lastmod>';
+            $sitemapContent .= '<changefreq>never</changefreq>';
+            $sitemapContent .= '<priority>0.8</priority>';
+            $sitemapContent .= '</url>';
+        }
+
+        $sitemapContent .= '</urlset>';
+
+        return $sitemapContent;
     }
 }

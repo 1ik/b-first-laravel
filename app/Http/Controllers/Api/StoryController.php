@@ -37,7 +37,7 @@ class StoryController extends Controller
     {
         $storyService->store($request->validated());
 
-        dispatch(new GenerateDynamicSitemap());
+        dispatch(new \App\Jobs\GenerateDynamicSitemap());
 
         return response()->json(['message' => 'Story created successfully', 'data' => true], 201);
     }
@@ -56,7 +56,7 @@ class StoryController extends Controller
     {
         $storyService->update($story,$request->validated());
 
-        dispatch(new GenerateDynamicSitemap());
+        dispatch(new \App\Jobs\GenerateDynamicSitemap());
 
         return response()->json([
             'message' => 'Story updated successfully',
@@ -85,7 +85,7 @@ class StoryController extends Controller
             'deleted_at' => now()
         ]);
 
-        dispatch(new GenerateDynamicSitemap());
+        dispatch(new \App\Jobs\GenerateDynamicSitemap());
         
         return response()->json([
             'message' => 'Story deleted successfully',

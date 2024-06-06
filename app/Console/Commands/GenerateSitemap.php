@@ -20,10 +20,10 @@ class GenerateSitemap extends Command
     {
         $this->info('Dispatching sitemap generation jobs...');
 
-        dispatch(new GenerateStaticSitemap());
-        dispatch(new GenerateDynamicSitemap());
+        GenerateStaticSitemap::dispatch();
+        GenerateDynamicSitemap::dispatch();
+        
 
         $this->info('Sitemap generation jobs dispatched successfully.');
     }
 }
-
