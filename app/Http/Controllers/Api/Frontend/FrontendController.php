@@ -17,10 +17,18 @@ use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
-    public function allCategories(){
+    public function allCategories(Request $request){
 
-        return CategoryResource::collection(Category::all());
+      $category = Category::query();
+      if(!empty($request->name)){
+        $category->where('name','like','%'.$request->name.'%');
     }
+
+    return CategoryResource::collection($category->orderBy('id', 'desc')->paginate(10));
+    }
+
+
+
     public function latestStories(Request $request){
         $pageSize = $request->input('size', 20);
         return StoryResource::collection(Story::with(['authors', 'categories', 'tags'])->latest()->paginate($pageSize));
