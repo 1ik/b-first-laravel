@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Services\StoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\StorySitemapGenerateEvent;
 
 class StoryController extends Controller
 {
@@ -34,7 +35,8 @@ class StoryController extends Controller
  
     public function store(StoryStoreRequest $request, StoryService $storyService)
     {
-        $storyService->store($request->validated());
+        $story = $storyService->store($request->validated());
+        event(new StorySitemapGenerateEvent($story));
 
         return response()->json(['message' => 'Story created successfully', 'data' => true], 201);
     }
@@ -51,7 +53,9 @@ class StoryController extends Controller
 
     public function update(StoryStoreRequest $request, Story $story, StoryService $storyService)
     {
-        $storyService->update($story,$request->validated());
+        $story = $storyService->update($story,$request->validated());
+        event(new StorySitemapGenerateEvent($story));
+
         return response()->json([
             'message' => 'Story updated successfully',
             'data'    => true
@@ -78,6 +82,8 @@ class StoryController extends Controller
         $story->update([
             'deleted_at' => now()
         ]);
+
+        event(new StorySitemapGenerateEvent($story));
 
         return response()->json([
             'message' => 'Story deleted successfully',
