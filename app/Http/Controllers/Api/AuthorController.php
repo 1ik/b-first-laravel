@@ -25,6 +25,7 @@ class AuthorController extends Controller
     {
         $author = Author::create([
             'name' => $request->name,
+            'meta' => $request->meta,
             'created_by' => Auth::user()->id
         ]);
         return response()->json(['message' => 'Author created successfully', 'data' => $author], 201);
@@ -44,6 +45,7 @@ class AuthorController extends Controller
     {
         $data = $author->update([
             'name' => $request->name,
+            'meta' => $request->meta,
         ]);
 
         return response()->json([
