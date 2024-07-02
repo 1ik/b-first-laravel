@@ -63,6 +63,12 @@ Route::group(['prefix'=>'v1'], function () {
         Route::group(['prefix' => 'sitemap'], function () {
           Route::get('/stories', [SiteMapController::class, 'sitemapStotries']);
         });
+
+        //Author details-------
+        Route::get('/author-details/{author}', [FrontendController::class, 'authorDetails']); 
+        
+        //Stories of author-----------
+        Route::get('/author-stories/{author}', [FrontendController::class, 'authorStories']); 
     });
 
     Route::post('/login', [UserController::class, 'login']);
