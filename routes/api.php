@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\Backend\TrashController;
 use App\Http\Controllers\Api\Backend\TrendyTopicController;
@@ -69,6 +70,9 @@ Route::group(['prefix'=>'v1'], function () {
         
         //Stories of author-----------
         Route::get('/author-stories/{author}', [FrontendController::class, 'authorStories']); 
+
+        //Get ads------------
+        Route::get('/ads', [AdController::class, 'getAdsByPage']);
     });
 
     Route::post('/login', [UserController::class, 'login']);
@@ -100,6 +104,9 @@ Route::group(['prefix'=>'v1'], function () {
         Route::get('/trash-items/{type}', [TrashController::class,'trashItems']);
         Route::put('/restore-trash-item/{type}/{id}', [TrashController::class,'restoreTrashItem']);
         Route::delete('/delete-trash-item/{type}/{id}', [TrashController::class,'deleteTrashItem']);
+
+        //Store ads---------------
+        Route::post('/ads', [AdController::class, 'store']);
 
     });
 });
