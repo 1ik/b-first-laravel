@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AdController extends Controller
 {
@@ -18,11 +19,28 @@ class AdController extends Controller
         $imageName = time().'.'.$request->image->extension();
         $request->image->move(public_path('images/ads'), $imageName);
 
-        Ad::create([
-            'image_path' => 'images/ads/'.$imageName,
-            'page' => $request->page,
-            'position' => $request->position,
-        ]);
+        $ad = Ad::where('page', $request->page)
+        ->where('position', $request->position)
+        ->first();
+
+        if ($ad) {
+            // Delete the existing image file if it exists
+            $existingImagePath = public_path($ad->image_path);
+            if (File::exists($existingImagePath)) {
+                File::delete($existingImagePath);
+            }
+    
+            // Update existing ad with new image path
+            $ad->image_path = 'images/ads/' . $imageName;
+            $ad->save();
+        } else {
+            // Create new ad
+            Ad::create([
+                'image_path' => 'images/ads/' . $imageName,
+                'page' => $request->page,
+                'position' => $request->position,
+            ]);
+        }
 
         return response()->json(['message' => 'Ad created successfully.']);
     }
