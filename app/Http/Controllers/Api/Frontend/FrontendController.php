@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthorResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\StoryResource;
 use App\Http\Resources\TagResource;
+use App\Models\Author;
 use App\Models\Category;
 use App\Models\FeaturedStories;
 use App\Models\RecommendedStories;
@@ -189,5 +191,20 @@ class FrontendController extends Controller
          })->orderBy('id', 'desc')->paginate($pageSize);
   
          return StoryResource::collection($stories);
+    }
+
+    public function authorDetails(Author $author)
+    {
+        return response()->json([
+            'message' => 'Author retrieved successfully',
+            'data'    => new AuthorResource($author),
+        ], 200);
+    }
+
+    public function authorStories(Request $request,Author $author){
+        $pageSize = $request->input('size', 20);
+        $stories = $author->stories()->orderBy('id', 'desc')->paginate($pageSize); 
+
+     return StoryResource::collection($stories);
     }
 }

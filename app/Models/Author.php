@@ -11,7 +11,12 @@ class Author extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name','deleted_at','created_by','updated_by'];
+    protected $fillable = ['name', 'meta', 'deleted_at', 'created_by', 'updated_by'];
+
+    public function setMetaAttribute($value)
+    {
+        $this->attributes['meta'] = json_encode($value);
+    }
 
     public function stories(): BelongsToMany
     {
