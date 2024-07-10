@@ -24,7 +24,7 @@ class StoryService{
     public function update(Story $story, array $data)
     {
         
-        DB::transaction(function() use($story, $data) {
+        return DB::transaction(function() use($story, $data) {
 
             $story = tap($story)->update($data);
             StoryEditHistory::create([
@@ -35,6 +35,8 @@ class StoryService{
             $story->authors()->sync($data['authors']);
             $story->categories()->sync($data['categories']);
             $story->tags()->sync($data['tags']);
+
+            return $story;
 
         }, 5);
     }

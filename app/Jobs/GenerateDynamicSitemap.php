@@ -26,6 +26,12 @@ class GenerateDynamicSitemap implements ShouldQueue
             $sitemapsPath = 'public/sitemaps';
             $sitemaps = [];
 
+            // Ensure the sitemaps directory exists
+            if (!File::exists($sitemapsPath)) {
+                File::makeDirectory($sitemapsPath, 0777, true, true);
+                Log::info("Created directory: {$sitemapsPath}");
+            }
+
             // Fetch all stories ordered by ID ascending
             $stories = Story::whereNull('deleted_at')->orderBy('id')->get();
             $totalStories = $stories->count();

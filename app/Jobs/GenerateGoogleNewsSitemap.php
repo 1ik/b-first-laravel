@@ -25,6 +25,12 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
             $sitemapsPath = 'public/sitemaps';
             $sitemapFile = 'sitemap_google_news.xml';
 
+            // Ensure the sitemaps directory exists
+            if (!File::exists($sitemapsPath)) {
+                File::makeDirectory($sitemapsPath, 0777, true, true);
+                Log::info("Created directory: {$sitemapsPath}");
+            }
+
             // Fetch stories from the last 48 hours
             $stories = Story::whereNull('deleted_at')
                 ->where('created_at', '>=', Carbon::now()->subHours(48))
