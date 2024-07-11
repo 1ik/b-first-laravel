@@ -21,6 +21,15 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
         try {
             Log::info('Generating Google News sitemap.');
 
+
+	    // THIS WORKS
+	    $content = 'This is the content to write into the file';
+            $filename = 'sitemaps/example.txt';
+            $path = public_path($filename);
+	    File::put($path, $content);
+
+
+
             $baseUrl = 'https://bfirst.news';
             $sitemapsPath = 'public/sitemaps';
             $sitemapFile = 'sitemap_google_news.xml';
