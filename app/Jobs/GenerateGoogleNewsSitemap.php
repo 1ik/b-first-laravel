@@ -65,9 +65,6 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
             // Write the Google News sitemap to the file
             File::put($filePath, $sitemapContent);
 
-            // Set proper permissions for the file
-            chmod($filePath, 0666);
-
             Log::info('Google News sitemap generation completed.');
         } catch (\Exception $e) {
             Log::error('Error generating Google News sitemap: ' . $e->getMessage());
