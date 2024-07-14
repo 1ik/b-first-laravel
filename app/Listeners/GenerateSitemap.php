@@ -16,8 +16,8 @@ class GenerateSitemap implements ShouldQueue
 
     public function handle(StorySitemapGenerateEvent $event)
     {
-        GenerateDynamicSitemap::dispatch();
-        GenerateGoogleNewsSitemap::dispatch();
         GenerateStaticSitemap::dispatch();
+        GenerateGoogleNewsSitemap::dispatch();
+        GenerateDynamicSitemap::dispatch();
     }
 }

@@ -23,7 +23,7 @@ class GenerateDynamicSitemap implements ShouldQueue
 
             $chunkSize = 2000;
             $baseUrl = 'https://bfirst.news';
-            $sitemapsPath = 'public/sitemaps';
+            $sitemapsPath = public_path('sitemaps');
             $sitemaps = [];
 
             // Ensure the sitemaps directory exists
@@ -54,8 +54,9 @@ class GenerateDynamicSitemap implements ShouldQueue
                 // Check if the chunk size is reached or it's the last story
                 if (($index + 1) % $chunkSize === 0 || $index === $totalStories - 1) {
                     $currentSitemapFile = 'sitemap_news_' . $currentSitemapIndex . '.xml';
-                    File::put("{$sitemapsPath}/{$currentSitemapFile}", $sitemapContent . "\n</urlset>");
-                    $sitemaps[] = "{$sitemapsPath}/{$currentSitemapFile}"; // Ensuring the path includes 'public'
+                    $currentSitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $currentSitemapFile;
+                    File::put($currentSitemapPath, $sitemapContent . "\n</urlset>");
+                    $sitemaps[] = $currentSitemapFile;
 
                     // Reset sitemap content for the next chunk
                     $sitemapContent = '<?xml version="1.0" encoding="UTF-8"?>
@@ -84,50 +85,56 @@ class GenerateDynamicSitemap implements ShouldQueue
 
     protected function updateSitemapIndex($sitemaps, $baseUrl, $sitemapsPath)
     {
-        // Read existing sitemap index
-        $existingSitemapIndex = '';
-        $sitemapIndexFile = "{$sitemapsPath}/sitemap.xml";
-        if (file_exists($sitemapIndexFile)) {
-            $existingSitemapIndex = file_get_contents($sitemapIndexFile);
-        }
+        try {
+            // Read existing sitemap index
+            $existingSitemapIndex = '';
+            $sitemapIndexFile = $sitemapsPath . DIRECTORY_SEPARATOR . 'sitemap.xml';
+            if (file_exists($sitemapIndexFile)) {
+                $existingSitemapIndex = file_get_contents($sitemapIndexFile);
+            }
 
-        // Start building new sitemap index
-        $sitemapIndexContent = '<?xml version="1.0" encoding="UTF-8"?>
+            // Start building new sitemap index
+            $sitemapIndexContent = '<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-        // Add static sitemap to the index if it exists and is not listed
-        $staticSitemap = 'sitemap_static.xml';
-        if (file_exists("{$sitemapsPath}/{$staticSitemap}")) {
-            $sitemapIndexContent .= "
+            // Add static sitemap to the index if it exists and is not listed
+            $staticSitemap = 'sitemap_static.xml';
+            if (file_exists($sitemapsPath . DIRECTORY_SEPARATOR . $staticSitemap)) {
+                $staticSitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $staticSitemap;
+                $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/{$sitemapsPath}/{$staticSitemap}</loc>
-        <lastmod>" . date('c', filemtime("{$sitemapsPath}/{$staticSitemap}")) . "</lastmod>
+        <loc>{$baseUrl}/sitemaps/{$staticSitemap}</loc>
+        <lastmod>" . date('c', filemtime($staticSitemapPath)) . "</lastmod>
     </sitemap>";
-        }
+            }
 
-        // Add google news sitemap
-        $googleNewsSitemap = 'sitemap_google_news.xml';
-        if (file_exists("{$sitemapsPath}/{$googleNewsSitemap}")) {
-            $sitemapIndexContent .= "
+            // Add google news sitemap
+            $googleNewsSitemap = 'sitemap_google_news.xml';
+            if (file_exists($sitemapsPath . DIRECTORY_SEPARATOR . $googleNewsSitemap)) {
+                $googleNewsSitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $googleNewsSitemap;
+                $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/{$sitemapsPath}/{$googleNewsSitemap}</loc>
-        <lastmod>" . date('c', filemtime("{$sitemapsPath}/{$googleNewsSitemap}")) . "</lastmod>
+        <loc>{$baseUrl}/sitemaps/{$googleNewsSitemap}</loc>
+        <lastmod>" . date('c', filemtime($googleNewsSitemapPath)) . "</lastmod>
     </sitemap>";
-        }
+            }
 
-        foreach ($sitemaps as $sitemap) {
-            // Add the dynamic sitemaps
-            $sitemapIndexContent .= "
+            foreach ($sitemaps as $sitemap) {
+                $sitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $sitemap;
+                $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/{$sitemap}</loc>
-        <lastmod>" . date('c', filemtime($sitemap)) . "</lastmod>
+        <loc>{$baseUrl}/sitemaps/{$sitemap}</loc>
+        <lastmod>" . date('c', filemtime($sitemapPath)) . "</lastmod>
     </sitemap>";
-        }
+            }
 
-        $sitemapIndexContent .= '
+            $sitemapIndexContent .= '
 </sitemapindex>';
 
-        // Write the updated sitemap index to the file
-        File::put($sitemapIndexFile, $sitemapIndexContent);
+            // Write the updated sitemap index to the file
+            File::put($sitemapIndexFile, $sitemapIndexContent);
+        } catch (\Exception $e) {
+            Log::error('Error updating sitemap index: ' . $e->getMessage());
+        }
     }
 }

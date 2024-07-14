@@ -21,18 +21,10 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
         try {
             Log::info('Generating Google News sitemap.');
 
-
-	    // THIS WORKS
-	    $content = 'This is the content to write into the file';
-            $filename = 'sitemaps/example.txt';
-            $path = public_path($filename);
-	    File::put($path, $content);
-
-
-
             $baseUrl = 'https://bfirst.news';
-            $sitemapsPath = 'public/sitemaps';
             $sitemapFile = 'sitemap_google_news.xml';
+            $sitemapsPath = public_path('sitemaps');
+            $filePath = $sitemapsPath . DIRECTORY_SEPARATOR . $sitemapFile;
 
             // Ensure the sitemaps directory exists
             if (!File::exists($sitemapsPath)) {
@@ -71,7 +63,10 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
             $sitemapContent .= "\n</urlset>";
 
             // Write the Google News sitemap to the file
-            File::put("{$sitemapsPath}/{$sitemapFile}", $sitemapContent);
+            File::put($filePath, $sitemapContent);
+
+            // Set proper permissions for the file
+            chmod($filePath, 0666);
 
             Log::info('Google News sitemap generation completed.');
         } catch (\Exception $e) {
