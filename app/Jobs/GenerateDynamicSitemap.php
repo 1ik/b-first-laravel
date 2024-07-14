@@ -21,7 +21,7 @@ class GenerateDynamicSitemap implements ShouldQueue
         try {
             Log::info('Generating dynamic sitemap.');
 
-            $chunkSize = 2000;
+            $chunkSize = 10000;
             $baseUrl = 'https://bfirst.news';
             $sitemapsPath = public_path('sitemaps');
             $sitemaps = [];
@@ -103,7 +103,7 @@ class GenerateDynamicSitemap implements ShouldQueue
                 $staticSitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $staticSitemap;
                 $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/sitemaps/{$staticSitemap}</loc>
+        <loc>{$baseUrl}/public/sitemaps/{$staticSitemap}</loc>
         <lastmod>" . date('c', filemtime($staticSitemapPath)) . "</lastmod>
     </sitemap>";
             }
@@ -114,7 +114,7 @@ class GenerateDynamicSitemap implements ShouldQueue
                 $googleNewsSitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $googleNewsSitemap;
                 $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/sitemaps/{$googleNewsSitemap}</loc>
+        <loc>{$baseUrl}/public/sitemaps/{$googleNewsSitemap}</loc>
         <lastmod>" . date('c', filemtime($googleNewsSitemapPath)) . "</lastmod>
     </sitemap>";
             }
@@ -123,7 +123,7 @@ class GenerateDynamicSitemap implements ShouldQueue
                 $sitemapPath = $sitemapsPath . DIRECTORY_SEPARATOR . $sitemap;
                 $sitemapIndexContent .= "
     <sitemap>
-        <loc>{$baseUrl}/sitemaps/{$sitemap}</loc>
+        <loc>{$baseUrl}/public/sitemaps/{$sitemap}</loc>
         <lastmod>" . date('c', filemtime($sitemapPath)) . "</lastmod>
     </sitemap>";
             }
