@@ -24,7 +24,7 @@ class AdController extends Controller
         ->first();
 
         if ($ad) {
-            // Delete the existing image file if it exists
+            // Delete the existing image file if it exists 
             $existingImagePath = public_path($ad->image_path);
             if (File::exists($existingImagePath)) {
                 File::delete($existingImagePath);
