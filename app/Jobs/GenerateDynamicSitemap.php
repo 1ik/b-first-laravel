@@ -22,7 +22,7 @@ class GenerateDynamicSitemap implements ShouldQueue
             Log::info('Generating dynamic sitemap.');
 
             $chunkSize = 10000;
-            $baseUrl = 'https://bfirst.news';
+            $baseUrl = env('BASE_URL');
             $sitemapsPath = public_path('sitemaps');
             $sitemaps = [];
 
@@ -75,13 +75,28 @@ class GenerateDynamicSitemap implements ShouldQueue
     }
 
     protected function getNewsUrl($news)
-    {
-        $baseUrl = 'https://bfirst.news';
-        $id = $news->id ?? '';
-        $title = $news->title ?? '';
-        $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
-        return "{$baseUrl}/news/{$id}/{$formattedTitle}";
+{
+    $baseUrl = env('BASE_URL');
+    $id = $news->id ?? '';
+    $title = $news->title ?? '';
+    $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
+    $slug = 'news';
+
+    if (isset($news->categories)) {
+        foreach ($news->categories as $category) {
+            if ($category->name === 'Video_Gallery') {
+                $slug = 'video_gallery';
+                break;
+            } elseif ($category->name === 'Photo_Gallery') {
+                $slug = 'photo_gallery';
+                break;
+            }
+        }
     }
+
+    return "{$baseUrl}/{$slug}/{$id}/{$formattedTitle}";
+}
+
 
     protected function updateSitemapIndex($sitemaps, $baseUrl, $sitemapsPath)
     {

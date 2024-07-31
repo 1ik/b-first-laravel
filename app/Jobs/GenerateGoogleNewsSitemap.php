@@ -21,7 +21,6 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
         try {
             Log::info('Generating Google News sitemap.');
 
-            $baseUrl = 'https://bfirst.news';
             $sitemapFile = 'sitemap_google_news.xml';
             $sitemapsPath = public_path('sitemaps');
             $filePath = $sitemapsPath . DIRECTORY_SEPARATOR . $sitemapFile;
@@ -73,10 +72,24 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
 
     protected function getNewsUrl($news)
     {
-        $baseUrl = 'https://bfirst.news';
+        $baseUrl = env('BASE_URL');
         $id = $news->id ?? '';
         $title = $news->title ?? '';
         $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
-        return "{$baseUrl}/news/{$id}/{$formattedTitle}";
+        $slug = 'news';
+    
+        if (isset($news->categories)) {
+            foreach ($news->categories as $category) {
+                if ($category->name === 'Video_Gallery') {
+                    $slug = 'video_gallery';
+                    break;
+                } elseif ($category->name === 'Photo_Gallery') {
+                    $slug = 'photo_gallery';
+                    break;
+                }
+            }
+        }
+    
+        return "{$baseUrl}/{$slug}/{$id}/{$formattedTitle}";
     }
 }
