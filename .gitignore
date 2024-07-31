@@ -19,5 +19,4 @@ yarn-error.log
 /.vscode
 *.xml
 /public/sitemaps
-/public/images/ads
-
+/public/images/user_uploads/

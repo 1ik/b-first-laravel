@@ -17,7 +17,7 @@ class AdController extends Controller
         ]);
 
         $imageName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('images/ads'), $imageName);
+        $request->image->move(public_path('images/user_uploads'), $imageName);
 
         $ad = Ad::where('page', $request->page)
         ->where('position', $request->position)
@@ -31,12 +31,12 @@ class AdController extends Controller
             }
     
             // Update existing ad with new image path
-            $ad->image_path = 'images/ads/' . $imageName;
+            $ad->image_path = 'images/user_uploads/' . $imageName;
             $ad->save();
         } else {
             // Create new ad
             Ad::create([
-                'image_path' => 'images/ads/' . $imageName,
+                'image_path' => 'images/user_uploads/' . $imageName,
                 'page' => $request->page,
                 'position' => $request->position,
             ]);
