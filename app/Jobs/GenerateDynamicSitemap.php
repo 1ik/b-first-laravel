@@ -22,7 +22,7 @@ class GenerateDynamicSitemap implements ShouldQueue
             Log::info('Generating dynamic sitemap.');
 
             $chunkSize = 10000;
-            $baseUrl = env('BASE_URL');
+            $baseUrl = config('custom.base_url');
             $sitemapsPath = public_path('sitemaps');
             $sitemaps = [];
 
@@ -76,7 +76,7 @@ class GenerateDynamicSitemap implements ShouldQueue
 
     protected function getNewsUrl($news)
 {
-    $baseUrl = env('BASE_URL');
+    $baseUrl = config('custom.base_url');
     $id = $news->id ?? '';
     $title = $news->title ?? '';
     $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));

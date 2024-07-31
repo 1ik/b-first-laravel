@@ -72,7 +72,7 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
 
     protected function getNewsUrl($news)
     {
-        $baseUrl = env('BASE_URL');
+        $baseUrl = config('custom.base_url');
         $id = $news->id ?? '';
         $title = $news->title ?? '';
         $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
