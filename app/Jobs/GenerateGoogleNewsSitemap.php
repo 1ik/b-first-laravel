@@ -76,7 +76,7 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
         $id = $news->id ?? '';
         $title = $news->title ?? '';
         $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
-        $slug = 'news';
+        $slug = '';
     
         if (isset($news->categories)) {
             foreach ($news->categories as $category) {
@@ -86,6 +86,8 @@ class GenerateGoogleNewsSitemap implements ShouldQueue
                 } elseif ($category->name === 'Photo_Gallery') {
                     $slug = 'photo_gallery';
                     break;
+                } else {
+                    $slug = strtolower($category->name);
                 }
             }
         }

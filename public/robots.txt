@@ -1,4 +1,5 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://bfirst.news/public/sitemaps/sitemap.xml
+Sitemap: https://bfirst.news/sitemap.xml
+Sitemap: https://bfirst.news/sitemap_google_news.xml

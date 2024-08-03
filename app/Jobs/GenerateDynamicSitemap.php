@@ -33,7 +33,7 @@ class GenerateDynamicSitemap implements ShouldQueue
             }
 
             // Fetch all stories ordered by ID ascending
-            $stories = Story::whereNull('deleted_at')->orderBy('id')->get();
+            $stories = Story::whereNull('deleted_at')->orderBy('id',  'desc')->get();
             $totalStories = $stories->count();
 
             $currentSitemapIndex = 1; // Start with the first sitemap file
@@ -80,7 +80,7 @@ class GenerateDynamicSitemap implements ShouldQueue
     $id = $news->id ?? '';
     $title = $news->title ?? '';
     $formattedTitle = strtolower(preg_replace('/[^\w\s-]/', '', str_replace(' ', '-', $title)));
-    $slug = 'news';
+    $slug = '';
 
     if (isset($news->categories)) {
         foreach ($news->categories as $category) {
@@ -90,6 +90,8 @@ class GenerateDynamicSitemap implements ShouldQueue
             } elseif ($category->name === 'Photo_Gallery') {
                 $slug = 'photo_gallery';
                 break;
+            } else {
+                $slug = strtolower($category->name);
             }
         }
     }
